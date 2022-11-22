@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,500&display=swap');
+
+body{
+  font-family: 'Raleway', sans-serif;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
+                    url("../Banderas/fondo-campo-futbol-degradado-puerta_23-2149002270.webp");
+  color: white;
+}
+
+h1,h2,h3,h4,h5,h6,span{
+  font-family: 'Lato', sans-serif;
+}  
+
+.form-floating > label{
+  color: black;
+}
+
+.input-gol{
+  text-align: center;
+  color: black;
+  width: 50px;
+  height: 30px;
+}
+  
+.page-wrap {
+    min-height: 90vh;
+}
+
+.page-wrap-loading {
+  min-height: 100vh;
+}
+
+.bg-card {
+  background-color: #676961;
+}
+
+.bg-container {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.nav-link{
+  color: white;
+}
+
+.nav-link .active{
+  color: black;
+}
+
