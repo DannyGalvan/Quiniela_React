@@ -22,9 +22,10 @@ const CompareGroup = () => {
     
   return (
     <div className="bg-container page-wrap">
-    <h1 className="text-center fw-bold pt-3">
-      Comparacion por Grupos Mundial Qatar 2022
-    </h1>
+    <div className="page-hero">
+      <h1>Comparación por <span className="gradient-text">Grupos</span></h1>
+      <p>Mundial 2026 — USA · Canadá · México</p>
+    </div>
     <Container className="py-5">
       <Tabs className="mb-3" justify>
       <Tab eventKey="Grupo A" title="Grupo A">

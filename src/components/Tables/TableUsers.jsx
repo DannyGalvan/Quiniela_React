@@ -1,59 +1,54 @@
-import React from "react";
+import React, { useContext } from "react";
 import DataTable from "react-data-table-component";
 import { LoadingComponent } from "../SpinerCarga/LoadingComponent";
 import { MesajeNoData } from "../Mesages/MesajeNoData";
 import { CardUser } from "../Cards/CardUser";
-import { seleccionMensaje } from "../../config/configuracion";
-import { paginacionOpciones } from "../../config/configuracion";
-import { compactGrid } from "../../theme/tableTheme";
+import { seleccionMensaje, paginacionOpciones } from "../../config/configuracion";
+import { getTableStyles, getTableTheme, posicionStyle, punteoStyle } from "../../theme/tableTheme";
+import { ThemeContext } from "../../context/themeContext";
 
-const columnas = [
-  {
-    name: "Pocición",
-    selector: (row) => row.pocicion,
-    sortable: false,
-    maxWidth: "90px",
-    minWidth: "70px",
-    center: true,
-    style: {
-      color: '#FDD835',
-      fontWeight: 'bold',
+export const TableUsers = ({ data, pending, width, text }) => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+
+  const columnas = [
+    {
+      name: "Posición",
+      selector: (row) => row.pocicion,
+      sortable: false,
+      maxWidth: "90px",
+      minWidth: "70px",
+      center: true,
+      style: posicionStyle(isDark),
     },
-  },
-  {
-    name: "Nombre",
-    selector: (row) => row.nombre,
-    sortable: true,
-    wrap: true,
-  },
-  {
-    name: "DPI",
-    selector: (row) => `${row.dpi.substring(0,5)}...3325120101...`,
-    sortable: true,
-    hide: "md",
-    wrap: true,
-  },
-  {
-    name: "Punteo",
-    selector: (row) => row.punteo,
-    sortable: true,   
-    maxWidth: "120px",
-    minWidth: "100px",
-    center: true,
-    hide: "sm",
-    style: {
-      			color: 'red',
-            fontWeight: 'bold',
-      		},
-  },
-];
-
-export const TableUsers = (props) => {
-  const { data, pending, width, text } = props;
+    {
+      name: "Nombre",
+      selector: (row) => row.nombre,
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "DPI",
+      selector: (row) => `${row.dpi.substring(0, 5)}·····`,
+      sortable: true,
+      hide: "md",
+      wrap: true,
+    },
+    {
+      name: "Punteo",
+      selector: (row) => row.punteo,
+      sortable: true,
+      maxWidth: "120px",
+      minWidth: "100px",
+      center: true,
+      hide: "sm",
+      style: punteoStyle(isDark),
+    },
+  ];
 
   const ExpandedComponent = ({ data }) => (
-    <div className="d-flex justify-content-center">
-      <CardUser data={data} variant={"primary"} />
+    <div className="d-flex justify-content-center py-3">
+      <CardUser data={data} variant={isDark ? "dark" : "light"} />
     </div>
   );
 
@@ -64,21 +59,22 @@ export const TableUsers = (props) => {
         contextMessage={seleccionMensaje}
         columns={columnas}
         data={data}
-        title="Tabla de Posiciones"
+        title="🏆 Tabla de Posiciones"
         pagination
         expandableRows={width}
         fixedHeader
         fixedHeaderScrollHeight="500px"
         expandableRowsComponent={ExpandedComponent}
         paginationComponentOptions={paginacionOpciones}
-        theme="individuality"
+        theme={getTableTheme(isDark)}
         highlightOnHover
+        striped
         progressPending={pending}
-        progressComponent={<LoadingComponent variant="light" />}
+        progressComponent={<LoadingComponent variant={isDark ? "light" : "primary"} />}
         noDataComponent={
-          <MesajeNoData mesaje={`No se encontraros usuarios con ${text}`} />
+          <MesajeNoData mesaje={`No se encontraron usuarios con "${text}"`} />
         }
-        customStyles={compactGrid}
+        customStyles={getTableStyles(isDark)}
       />
     </div>
   );

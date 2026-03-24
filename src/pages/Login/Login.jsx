@@ -1,16 +1,8 @@
 import React, { useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Image,
-  Form,
-  Button,
-  Alert,
-} from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { createUser, modifyUser, resetUser } from "../../redux/state/user";
+import { Form, Alert } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { createUser } from "../../redux/state/user";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "../../hooks/useForm";
 import { InputFormFloating } from "../../components/Inputs/InputFormFloating";
@@ -19,25 +11,20 @@ import { SERVERPATH } from "../../config/configuracion";
 
 const logoImage = require.context("../../Banderas", true);
 
-const initialForm = {
-  dpi: "",
-};
+const initialForm = { dpi: "" };
 
 const validationsForm = (form) => {
   let errors = {};
-
   if (!form.dpi.trim()) {
-    errors.dpi = "Tu 'CUI' no puede ser vacio";
+    errors.dpi = "Tu 'CUI' no puede ser vacío";
   } else if (form.dpi.length < 5) {
-    errors.dpi = "Tu 'CUI' debe tener minimo 5 caracteres";
+    errors.dpi = "Tu 'CUI' debe tener mínimo 5 caracteres";
   }
-
   return errors;
 };
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
-  const userState = useSelector((store)=>store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -55,55 +42,66 @@ const Login = () => {
     useForm(initialForm, validationsForm, enviar);
 
   return (
-    <div className="page-wrap bg-container d-flex align-items-center">
-      <Container className="pt-5">
-        <Row className="justify-content-center">
-          <Col xs="8" md="6" lg="6" className="mb-4">
-            <Image fluid src={logoImage(`./LOGO.png`)} />
-          </Col>
-          <Col xs="12" md="10" lg="6" className="my-auto mx-auto">
-            <form onSubmit={handleSubmit}>
-              <InputFormFloating
-                label="CUI"
-                name="dpi"
-                error={errors.dpi}
-                type="number"
-                placeholder="dpi..."
-                value={form.dpi}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                pattern={"/^[0-9]{4}\\s?[0-9]{5}\\s?[0-9]{4}$/"}
-              />
+    <div className="login-page">
+      <div className="login-card">
+        <img
+          className="login-logo"
+          src={logoImage(`./LOGO.png`)}
+          alt="Logo Mundial 2026"
+        />
+        <h1 className="login-title">Bienvenido</h1>
+        <p className="login-subtitle">Mundial USA · Canada · Mexico 2026</p>
 
-              <div className="d-flex justify-content-between mx-4 my-4">
-                <Form.Check
-                  type="checkbox"
-                  id={`default-checkbox`}
-                  label={`Recuerdame`}
-                />
-              </div>
+        <form onSubmit={handleSubmit}>
+          <InputFormFloating
+            label="CUI / DPI"
+            name="dpi"
+            error={errors.dpi}
+            type="number"
+            placeholder="Ingresa tu CUI..."
+            value={form.dpi}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            pattern={"/^[0-9]{4}\\s?[0-9]{5}\\s?[0-9]{4}$/"}
+          />
 
-              <div className="d-grid gap-2 mb-4">
-                <Button variant="primary" size="lg" type="submit">
-                  Iniciar Sesion
-                </Button>
-              </div>
-              <div className="d-flex justify-content-center">
-                <Link to={`${SERVERPATH}/new_user`} className="text-center">
-                  Crear Usuario
-                </Link>
-              </div>
-              {response && (
-                <Alert variant="danger">
-                  <Alert.Heading className="text-center text-danger fw-bold">
-                    {response.mensaje}
-                  </Alert.Heading>
-                </Alert>
-              )}
-            </form>
-          </Col>
-        </Row>
-      </Container>
+          <div className="d-flex align-items-center mx-1 my-3">
+            <Form.Check
+              type="checkbox"
+              id="remember-me"
+              label="Recuérdame"
+              style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}
+            />
+          </div>
+
+          <div className="d-grid mb-3">
+            <button className="btn-wc-primary" type="submit">
+              Iniciar Sesión →
+            </button>
+          </div>
+
+          <div className="text-center">
+            <Link
+              to={`${SERVERPATH}/new_user`}
+              style={{
+                color: 'var(--brand-accent)',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+              }}
+            >
+              ¿No tienes cuenta? Crear usuario
+            </Link>
+          </div>
+
+          {response && (
+            <Alert variant="danger" className="mt-3 mb-0">
+              <Alert.Heading className="text-center fs-6 mb-0 fw-bold">
+                {response.mensaje}
+              </Alert.Heading>
+            </Alert>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

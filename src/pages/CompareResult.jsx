@@ -31,9 +31,10 @@ const CompareResult = () => {
 
   return (
     <div className="page-wrap bg-container pt-3">
-      <h1 className="text-center fw-bold">
-        Comparacion de Resultados Mundial Qatar 2022
-      </h1>
+      <div className="page-hero">
+        <h1>Comparación de <span className="gradient-text">Resultados</span></h1>
+        <p>Mundial 2026 — USA · Canadá · México</p>
+      </div>
       {!loading ? (
         <Container className="pt-5">
           <InputFormFloating

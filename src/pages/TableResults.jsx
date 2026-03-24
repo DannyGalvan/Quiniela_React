@@ -60,7 +60,10 @@ const TableResults = () => {
 
   return (
     <div className="bg-container page-wrap">
-      <h1 className="text-center fw-bold pt-5">Tabla de resultados</h1>
+      <div className="page-hero">
+        <h1>Tabla de <span className="gradient-text">Clasificación</span></h1>
+        <p>Mundial 2026 — USA · Canadá · México</p>
+      </div>
       <Container className="mt-3" fluid>
         <InputFormFloating
           label="Buscar Usuario"

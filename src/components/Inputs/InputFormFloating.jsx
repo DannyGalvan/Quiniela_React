@@ -1,33 +1,28 @@
-import React from 'react'
-import { Col } from 'react-bootstrap';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
+import React from 'react';
 
 export const InputFormFloating = (props) => {
-    const {label,type,placeholder,name,onBlur,onChange,value,error,id,referencia, className, pattern} = props;
+  const { label, type, placeholder, name, onBlur, onChange, value, error, id, referencia, className, pattern } = props;
+
   return (
-    <>
-       <Col className={className ?? 'mb-3'}>
-            <FloatingLabel
-            controlId={id}
-            label={label}
-            >
-                <Form.Control 
-                type={type} 
-                placeholder={placeholder}
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                onKeyUp={onChange}
-                value={value} 
-                ref={referencia}
-                isValid={error ? false : true}
-                isInvalid={error ? true : false}
-                pattern={pattern}
-                required />
-            </FloatingLabel>
-            <Form.Text className='text-danger fw-bold'>{error}</Form.Text>
-       </Col>
-    </>
-  )
-}
+    <div className={`wc-field ${className ?? 'mb-3'}`}>
+      <label className="wc-field__label" htmlFor={id || name}>
+        {label}
+      </label>
+      <input
+        id={id || name}
+        className={`wc-field__input${error ? ' wc-field__input--invalid' : ''}`}
+        type={type}
+        placeholder={placeholder || ' '}
+        name={name}
+        onBlur={onBlur}
+        onChange={onChange}
+        onKeyUp={onChange}
+        value={value}
+        ref={referencia}
+        pattern={pattern}
+        required
+      />
+      {error && <span className="wc-field__error">{error}</span>}
+    </div>
+  );
+};

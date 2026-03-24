@@ -19,9 +19,10 @@ const PostGroup = () => {
   } = useMatches(null,null);
   return (
     <div className="bg-container page-wrap">
-      <h1 className="text-center fw-bold pt-3">
-        Ingreso de Resultados por Grupo Mundial Quatar 2022
-      </h1>
+      <div className="page-hero">
+        <h1>Ingreso por <span className="gradient-text">Grupos</span></h1>
+        <p>Mundial 2026 — USA · Canadá · México</p>
+      </div>
       <Container className="py-5">
         <Tabs className="mb-3" justify>
         <Tab eventKey="Grupo A" title="Grupo A">

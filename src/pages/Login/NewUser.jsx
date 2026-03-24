@@ -1,12 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
+import { Form, Alert } from "react-bootstrap";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "../../hooks/useForm";
 import { InputFormFloating } from "../../components/Inputs/InputFormFloating";
@@ -74,78 +68,85 @@ const Login = () => {
     useForm(initialForm, validationsForm, enviar);
 
   return (
-    <div className="page-wrap bg-container d-flex align-items-center">
-      <Container className="pt-5">
-        <Row className="justify-content-center">
-          <Col xs="8" md="6" lg="6" className="mb-4">
-            <Image
-              fluid
-              src={logoImage(`./LOGO.png`)}              
+    <div className="login-page">
+      <div className="login-card">
+        <img
+          className="login-logo"
+          src={logoImage(`./LOGO.png`)}
+          alt="Logo Mundial 2026"
+        />
+        <h1 className="login-title">Crear Cuenta</h1>
+        <p className="login-subtitle">Mundial USA · Canada · Mexico 2026</p>
+
+        <form onSubmit={handleSubmit}>
+          <InputFormSelect
+            data={paises}
+            name={"pais"}
+            value={form.pais}
+            error={errors.pais}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+
+          <InputFormFloating
+            label="Ingresa tu Nombre"
+            name="nombre"
+            error={errors.nombre}
+            type="text"
+            placeholder="nombre..."
+            value={form.nombre}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+
+          <InputFormFloating
+            label="CUI"
+            name="dpi"
+            error={errors.dpi}
+            type="number"
+            placeholder="dpi..."
+            value={form.dpi}
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+
+          <div className="d-flex align-items-center mx-1 my-3">
+            <Form.Check
+              type="checkbox"
+              id="remember-me-new"
+              label="Recuérdame"
+              style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}
             />
-          </Col>
-          <Col xs="12" md="10" lg="6" className="my-auto mx-auto">
-            <form onSubmit={handleSubmit}>
-              <InputFormSelect
-                data={paises}
-                name={"pais"}
-                size={"lg"}
-                value={form.pais}
-                error={errors.pais}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
+          </div>
 
-              <InputFormFloating
-                label="Ingresa tu Nombre"
-                name="nombre"
-                error={errors.nombre}
-                type="text"
-                placeholder="nombre..."
-                value={form.nombre}
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
+          <div className="d-grid mb-3">
+            <button className="btn-wc-primary" type="submit">
+              Crear Usuario →
+            </button>
+          </div>
 
-              <InputFormFloating
-                label="CUI"
-                name="dpi"
-                error={errors.dpi}
-                type="number"
-                placeholder="dpi..."
-                value={form.dpi}
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
+          <div className="text-center">
+            <Link
+              to={`${SERVERPATH}/login`}
+              style={{
+                color: 'var(--brand-accent)',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+              }}
+            >
+              ¿Ya tienes cuenta? Iniciar sesión
+            </Link>
+          </div>
 
-              <div className="d-flex justify-content-between mx-4 my-4">
-                <Form.Check
-                  type="checkbox"
-                  id={`default-checkbox`}
-                  label={`Recuerdame`}
-                />
-              </div>
-
-              <div className="d-grid gap-2 mb-4">
-                <Button variant="primary" size="lg" type="submit">
-                  Crear Usuario
-                </Button>
-              </div>
-              <div className="d-flex justify-content-center">
-                <Link to={`${SERVERPATH}/login`}  className="text-center">
-                  Ya Tienes Usuario?
-                </Link>
-              </div>
-              {response && (
-                <Alert variant="danger">
-                  <Alert.Heading className="text-center text-danger fw-bold">
-                    {response.mensaje}
-                  </Alert.Heading>
-                </Alert>
-              )}
-            </form>
-          </Col>
-        </Row>
-      </Container>
+          {response && (
+            <Alert variant="danger" className="mt-3 mb-0">
+              <Alert.Heading className="text-center fs-6 mb-0 fw-bold">
+                {response.mensaje}
+              </Alert.Heading>
+            </Alert>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

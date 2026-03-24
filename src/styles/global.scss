@@ -1,49 +1,1242 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Bebas+Neue&display=swap');
 
-body{
-  font-family: 'Raleway', sans-serif;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
-                    url("../Banderas/fondo-campo-futbol-degradado-puerta_23-2149002270.webp");
-  color: white;
+// ============================================================
+// CSS CUSTOM PROPERTIES — DESIGN TOKENS
+// ============================================================
+
+:root {
+  // Brand palette — World Cup 2026 (USA · Canada · Mexico)
+  --brand-primary:   #1E3A8A;   // Deep blue (USA)
+  --brand-accent:    #3B82F6;   // Electric blue
+  --brand-red:       #DC2626;   // Passion red (Canada/Mexico)
+  --brand-gold:      #F59E0B;   // Trophy gold
+  --brand-green:     #16A34A;   // Field green
+  --brand-gradient:  linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+
+  // Light theme (default)
+  --bg-base:         #F1F5F9;
+  --bg-surface:      #FFFFFF;
+  --bg-card:         rgba(255, 255, 255, 0.88);
+  --bg-overlay:      rgba(248, 250, 252, 0.97);
+  --bg-input:        #FFFFFF;
+  --bg-navbar:       #0A1929;
+  --bg-offcanvas:    #0F2340;
+
+  --text-primary:    #0F172A;
+  --text-secondary:  #475569;
+  --text-muted:      #94A3B8;
+  --text-on-dark:    #F8FAFC;
+
+  --border-color:    rgba(15, 23, 42, 0.10);
+  --border-subtle:   rgba(15, 23, 42, 0.06);
+
+  --shadow-sm:       0 1px 4px rgba(15, 23, 42, 0.08);
+  --shadow-md:       0 4px 18px rgba(15, 23, 42, 0.10);
+  --shadow-lg:       0 10px 36px rgba(15, 23, 42, 0.14);
+  --shadow-hover:    0 16px 48px rgba(15, 23, 42, 0.18);
+  --shadow-glow:     0 0 24px rgba(59, 130, 246, 0.25);
+
+  --radius-sm:       8px;
+  --radius-md:       14px;
+  --radius-lg:       20px;
+  --radius-xl:       28px;
+  --radius-full:     9999px;
+
+  --transition:      all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-h1,h2,h3,h4,h5,h6,span{
-  font-family: 'Lato', sans-serif;
-}  
+// Dark theme
+[data-theme="dark"] {
+  --bg-base:         #060A14;
+  --bg-surface:      #0C1829;
+  --bg-card:         rgba(14, 26, 50, 0.90);
+  --bg-overlay:      rgba(6, 10, 20, 0.97);
+  --bg-input:        #0C1829;
+  --bg-navbar:       #040810;
+  --bg-offcanvas:    #060D1E;
 
-.form-floating > label{
-  color: black;
+  --text-primary:    #F1F5F9;
+  --text-secondary:  #94A3B8;
+  --text-muted:      #64748B;
+  --text-on-dark:    #F1F5F9;
+
+  --border-color:    rgba(241, 245, 249, 0.08);
+  --border-subtle:   rgba(241, 245, 249, 0.04);
+
+  --shadow-sm:       0 1px 4px rgba(0, 0, 0, 0.35);
+  --shadow-md:       0 4px 18px rgba(0, 0, 0, 0.50);
+  --shadow-lg:       0 10px 36px rgba(0, 0, 0, 0.60);
+  --shadow-hover:    0 16px 48px rgba(0, 0, 0, 0.75);
+  --shadow-glow:     0 0 32px rgba(59, 130, 246, 0.40);
 }
 
-.input-gol{
-  text-align: center;
-  color: black;
-  width: 50px;
-  height: 30px;
+// Bootstrap 5 variable overrides — Light (asegurar valores base)
+:root {
+  --bs-dropdown-bg:                 #FFFFFF;
+  --bs-dropdown-color:              #0F172A;
+  --bs-dropdown-border-color:       rgba(15, 23, 42, 0.10);
+  --bs-dropdown-link-color:         #0F172A;
+  --bs-dropdown-link-hover-color:   #3B82F6;
+  --bs-dropdown-link-hover-bg:      rgba(59, 130, 246, 0.08);
+  --bs-dropdown-link-active-color:  #FFFFFF;
+  --bs-dropdown-link-active-bg:     #1E3A8A;
+  --bs-dropdown-divider-bg:         rgba(15, 23, 42, 0.10);
+  --bs-dropdown-box-shadow:         0 10px 36px rgba(15, 23, 42, 0.14);
 }
-  
+
+// Bootstrap 5 variable overrides — Dark
+[data-theme="dark"] {
+  --bs-body-bg:           #060A14;
+  --bs-body-color:        #F1F5F9;
+  --bs-card-bg:           #0C1829;
+  --bs-border-color:      rgba(241, 245, 249, 0.08);
+  --bs-secondary-bg:      #0C1829;
+  --bs-tertiary-bg:       #0F1F3D;
+  --bs-emphasis-color:    #F1F5F9;
+  --bs-link-color:        #3B82F6;
+
+  --bs-dropdown-bg:                 #111E35;
+  --bs-dropdown-color:              #F1F5F9;
+  --bs-dropdown-border-color:       rgba(241, 245, 249, 0.10);
+  --bs-dropdown-link-color:         #F1F5F9;
+  --bs-dropdown-link-hover-color:   #60A5FA;
+  --bs-dropdown-link-hover-bg:      rgba(59, 130, 246, 0.15);
+  --bs-dropdown-link-active-color:  #FFFFFF;
+  --bs-dropdown-link-active-bg:     #1E3A8A;
+  --bs-dropdown-divider-bg:         rgba(241, 245, 249, 0.08);
+  --bs-dropdown-box-shadow:         0 10px 36px rgba(0, 0, 0, 0.60);
+}
+
+// ============================================================
+// KEYFRAME ANIMATIONS
+// ============================================================
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.7; }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes rotateBall {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(59, 130, 246, 0.4); }
+  50%       { box-shadow: 0 0 28px rgba(59, 130, 246, 0.8); }
+}
+
+// ============================================================
+// BASE RESET & GLOBAL
+// ============================================================
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color 0.35s ease, color 0.35s ease;
+  background-image:
+    radial-gradient(ellipse at 15% 40%, rgba(30, 58, 138, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(220, 38, 38, 0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 85%, rgba(245, 158, 11, 0.07) 0%, transparent 45%);
+  background-attachment: fixed;
+}
+
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse at 15% 40%, rgba(30, 58, 138, 0.30) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(220, 38, 38, 0.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 85%, rgba(245, 158, 11, 0.10) 0%, transparent 45%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--brand-accent);
+  text-decoration: none;
+  transition: var(--transition);
+  &:hover { color: var(--brand-gold); }
+
+  // Los dropdown-item ya tienen su propio color; evitar que "a" los pise
+  &.dropdown-item {
+    color: var(--bs-dropdown-link-color) !important;
+    &:hover { color: var(--bs-dropdown-link-hover-color) !important; }
+  }
+}
+
+// Custom scrollbar
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--brand-accent); border-radius: 3px; }
+
+// ============================================================
+// LAYOUT HELPERS
+// ============================================================
+
 .page-wrap {
-    min-height: 90vh;
+  min-height: 90vh;
+  padding-top: 0.5rem;
+  // Sin animation aquí: las animaciones CSS crean stacking contexts
+  // que pueden competir con el dropdown del navbar (z-index issues).
+  // Las cards hijas tienen su propia animación slideUp individualmente.
 }
 
 .page-wrap-loading {
   min-height: 100vh;
 }
 
-.bg-card {
-  background-color: #676961;
-}
+// ============================================================
+// BACKGROUND CONTAINERS
+// ============================================================
 
 .bg-container {
-  background-color: rgba(0, 0, 0, 0.8);
+  background: var(--bg-overlay);
+  min-height: 90vh;
+  transition: background 0.35s ease;
 }
 
-.nav-link{
-  color: white;
+// ============================================================
+// CARD STYLES — Glassmorphism
+// ============================================================
+
+.bg-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--text-primary);
+  transition: var(--transition);
+  animation: slideUp 0.35s ease both;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--brand-gradient);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  position: relative;
+
+  &:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
+
+  .card-title, .card-text, span, strong {
+    color: var(--text-primary);
+  }
 }
 
-.nav-link .active{
-  color: black;
+// Match card header badge
+.match-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-on-dark);
+  background: var(--brand-gradient);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: 10px;
 }
 
+// Team row inside cards
+.team-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 10px;
+  transition: var(--transition);
+
+  &:last-of-type { border-bottom: none; }
+
+  &:hover { background: rgba(59, 130, 246, 0.04); border-radius: var(--radius-sm); }
+
+  img {
+    width: 32px;
+    height: 22px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+  }
+
+  .team-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .team-score {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--brand-accent);
+    min-width: 28px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.vs-divider {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  padding: 2px 0;
+  text-transform: uppercase;
+}
+
+// ============================================================
+// NAVBAR
+// ============================================================
+
+.navbar-wc {
+  background: var(--bg-navbar) !important;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  transition: background 0.35s ease;
+  // NO usar backdrop-filter aquí: crea un stacking context que atrapa al
+  // dropdown dentro del navbar y el contenido de la página lo tapa.
+  position: relative;
+  z-index: 1030; // Bootstrap navbar z-index estándar
+}
+
+.navbar-brand-wc {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+
+  img {
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: var(--transition);
+    &:hover { border-color: var(--brand-gold); box-shadow: 0 0 16px rgba(245, 158, 11, 0.4); }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 0.3px;
+    }
+
+    .brand-year {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--brand-gold), #FCD34D);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+}
+
+// Dark/light mode toggle
+.btn-theme-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  line-height: 1;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &:focus { outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35); }
+}
+
+// ============================================================
+// NAV LINKS
+// ============================================================
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.80) !important;
+  font-weight: 500;
+  transition: var(--transition);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem !important;
+
+  &:hover {
+    color: #FFFFFF !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+  &.active { color: var(--brand-gold) !important; }
+}
+
+// Navbar Collapse — estilo en mobile cuando se expande
+.navbar-collapse {
+  @media (max-width: 767.98px) {
+    background: var(--bg-offcanvas, #060D1E);
+    border-top: 1px solid var(--border-color);
+    padding: 0.75rem 1rem 1rem;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    margin: 0 -0.75rem;
+
+    .nav-link { border-radius: var(--radius-sm); padding: 0.6rem 0.75rem !important; }
+    .dropdown-menu { position: static; border: none; background: rgba(255,255,255,0.05); padding-left: 1rem; }
+    .btn-theme-toggle { width: 100%; justify-content: center; margin-top: 0.25rem; }
+  }
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+
+.btn-wc-primary {
+  background: var(--brand-gradient);
+  border: none;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  box-shadow: 0 4px 14px rgba(30, 58, 138, 0.35);
+  letter-spacing: 0.2px;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(30, 58, 138, 0.50);
+    filter: brightness(1.1);
+    color: #FFFFFF;
+  }
+
+  &:active { transform: translateY(0); }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.btn-wc-outline {
+  background: transparent;
+  border: 2px solid var(--brand-accent);
+  color: var(--brand-accent);
+  font-weight: 600;
+  padding: 0.55rem 1.5rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--brand-accent);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+}
+
+// ============================================================
+// ============================================================
+// FORM INPUTS — Modern themed controls
+// ============================================================
+
+// ── Shared base styles ───────────────────────────────────────
+.form-control,
+.form-select {
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
+
+  &::placeholder { color: var(--text-muted) !important; }
+
+  &:hover:not(:disabled):not(:focus) {
+    border-color: rgba(59, 130, 246, 0.45) !important;
+  }
+
+  &:focus {
+    border-color: var(--brand-accent) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+    outline: none !important;
+  }
+
+  &:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    background-color: var(--border-subtle) !important;
+  }
+
+  // Valid state — neutral (suppress Bootstrap's green)
+  &.is-valid {
+    border-color: var(--border-color) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+
+    &:focus {
+      border-color: var(--brand-accent) !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+    }
+  }
+
+  // Invalid state — brand red
+  &.is-invalid {
+    border-color: var(--brand-red) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+
+    &:focus {
+      border-color: var(--brand-red) !important;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18) !important;
+    }
+  }
+}
+
+// ── Floating label — DO NOT override height or padding-top/bottom
+//    Bootstrap needs its own height calc for the animation to work
+// ─────────────────────────────────────────────────────────────
+.form-floating {
+  > label {
+    color: var(--text-secondary) !important;
+    font-weight: 500 !important;
+  }
+
+  // Label turns accent color when floated (focused or has value)
+  > .form-control:focus ~ label,
+  > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--brand-accent) !important;
+    opacity: 1 !important;
+  }
+}
+
+// ── Select — themed chevron arrow ────────────────────────────
+.form-select {
+  min-height: 52px !important;
+  padding-left: 14px !important;
+  cursor: pointer;
+
+  // Light theme arrow
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 16px 12px !important;
+  padding-right: 40px !important;
+
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233B82F6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+  }
+}
+
+[data-theme="dark"] .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394A3B8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2360A5FA' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+  }
+
+  option {
+    background-color: #0C1829;
+    color: #F1F5F9;
+  }
+}
+
+// ── Validation feedback text ─────────────────────────────────
+.form-text.text-danger {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  margin-top: 4px !important;
+  padding-left: 4px !important;
+  display: block;
+  min-height: 1.1em; // reserve space to avoid layout shift
+}
+
+// ── Checkbox ─────────────────────────────────────────────────
+.form-check-input {
+  width: 1.1em !important;
+  height: 1.1em !important;
+  margin-top: 0.1em !important;
+  border: 1.5px solid var(--border-color) !important;
+  background-color: var(--bg-input) !important;
+  transition: var(--transition) !important;
+  cursor: pointer;
+
+  &:checked {
+    background-color: var(--brand-accent) !important;
+    border-color: var(--brand-accent) !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+  }
+}
+
+.form-check-label {
+  cursor: pointer;
+  color: var(--text-secondary) !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  padding-left: 4px !important;
+}
+
+// ── Goal input (score entry) ─────────────────────────────────
+.input-gol {
+  text-align: center;
+  width: 62px;
+  height: 42px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1.1rem;
+  font-weight: 800;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+  &:hover:not(:disabled) {
+    border-color: rgba(59, 130, 246, 0.45);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: var(--border-subtle);
+  }
+}
+
+// ── wc-field — custom label-above input ──────────────────────
+.wc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding-left: 2px;
+    transition: color 0.2s ease;
+  }
+
+  &__input {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+
+    &::placeholder { color: var(--text-muted); }
+
+    &:hover:not(:disabled) {
+      border-color: rgba(59, 130, 246, 0.45);
+    }
+
+    &:focus {
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+    }
+
+    &:focus ~ .wc-field__label,
+    &:not(:placeholder-shown) ~ .wc-field__label {
+      color: var(--brand-accent);
+    }
+
+    &--invalid {
+      border-color: var(--brand-red) !important;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18) !important;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: var(--border-subtle);
+    }
+
+    // hide number spinners
+    &[type="number"] {
+      -moz-appearance: textfield;
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    }
+  }
+
+  &__error {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--brand-red);
+    padding-left: 2px;
+  }
+}
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+
+.nav-tabs {
+  border-bottom: 2px solid var(--border-color);
+  gap: 4px;
+
+  .nav-link {
+    color: var(--text-secondary) !important;
+    background: transparent;
+    border: 2px solid transparent !important;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem !important;
+    transition: var(--transition);
+
+    &:hover:not(.active) {
+      color: var(--text-primary) !important;
+      background: var(--bg-card) !important;
+    }
+
+    &.active {
+      color: var(--brand-accent) !important;
+      background: var(--bg-surface) !important;
+      border-color: var(--border-color) !important;
+      border-bottom-color: var(--bg-surface) !important;
+    }
+  }
+}
+
+.tab-content { animation: fadeIn 0.3s ease; }
+
+// ============================================================
+// TABLES (react-data-table-component)
+// ============================================================
+
+.rdt_Table {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+}
+
+.rdt_TableHead .rdt_TableHeadRow {
+  background: var(--brand-primary) !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: none !important;
+}
+
+.rdt_TableRow {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--bg-card) !important;
+    border-bottom-color: transparent !important;
+  }
+}
+
+.rdt_Pagination {
+  background: var(--bg-surface) !important;
+  color: var(--text-secondary) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+// ============================================================
+// DROPDOWN (Bootstrap overrides for theme)
+// ============================================================
+
+// Dropdown — fix crítico de especificidad CSS
+//
+// Bootstrap define --bs-dropdown-bg DENTRO de .dropdown-menu { --bs-dropdown-bg: #fff }
+// lo que significa que un override en un ancestro ([data-theme="dark"]) pierde.
+// La solución: redefinir las vars DIRECTAMENTE sobre .dropdown-menu en dark mode.
+
+// Tema claro (default)
+.dropdown-menu {
+  --bs-dropdown-bg:                 #FFFFFF;
+  --bs-dropdown-color:              #0F172A;
+  --bs-dropdown-border-color:       rgba(15, 23, 42, 0.12);
+  --bs-dropdown-link-color:         #0F172A;
+  --bs-dropdown-link-hover-color:   #1E3A8A;
+  --bs-dropdown-link-hover-bg:      rgba(59, 130, 246, 0.08);
+  --bs-dropdown-link-active-color:  #FFFFFF;
+  --bs-dropdown-link-active-bg:     #1E3A8A;
+  --bs-dropdown-divider-bg:         rgba(15, 23, 42, 0.10);
+  --bs-dropdown-box-shadow:         0 10px 36px rgba(15, 23, 42, 0.14);
+
+  background-color: var(--bs-dropdown-bg) !important;
+  border: 1px solid var(--bs-dropdown-border-color) !important;
+  box-shadow: var(--bs-dropdown-box-shadow) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 6px !important;
+  min-width: 220px;
+  position: absolute !important;
+  z-index: 9999 !important;
+
+  // Aplica a <a>, <button>, <Link> con clase .dropdown-item
+  .dropdown-item,
+  a.dropdown-item,
+  button.dropdown-item {
+    color: var(--bs-dropdown-link-color) !important;
+    background-color: transparent !important;
+    border-radius: calc(var(--radius-sm) - 2px) !important;
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+    text-decoration: none !important;
+    display: block;
+
+    &:hover,
+    &:focus {
+      background-color: var(--bs-dropdown-link-hover-bg) !important;
+      color: var(--bs-dropdown-link-hover-color) !important;
+      text-decoration: none !important;
+    }
+
+    &:active,
+    &.active {
+      background-color: var(--bs-dropdown-link-active-bg) !important;
+      color: var(--bs-dropdown-link-active-color) !important;
+    }
+  }
+
+  .dropdown-divider {
+    border-color: var(--bs-dropdown-divider-bg) !important;
+    margin: 4px 0 !important;
+  }
+}
+
+// Dropdown en TEMA OSCURO — redefine vars al nivel correcto (.dropdown-menu)
+[data-theme="dark"] .dropdown-menu {
+  --bs-dropdown-bg:                 #111E35;
+  --bs-dropdown-color:              #F1F5F9;
+  --bs-dropdown-border-color:       rgba(241, 245, 249, 0.10);
+  --bs-dropdown-link-color:         #F1F5F9;
+  --bs-dropdown-link-hover-color:   #60A5FA;
+  --bs-dropdown-link-hover-bg:      rgba(59, 130, 246, 0.15);
+  --bs-dropdown-link-active-color:  #FFFFFF;
+  --bs-dropdown-link-active-bg:     #1E3A8A;
+  --bs-dropdown-divider-bg:         rgba(241, 245, 249, 0.08);
+  --bs-dropdown-box-shadow:         0 10px 36px rgba(0, 0, 0, 0.60);
+}
+
+// ============================================================
+// ALERTS & BADGES
+// ============================================================
+
+.alert {
+  border-radius: var(--radius-md);
+  border: none;
+  border-left: 4px solid;
+
+  &.alert-danger {
+    background: rgba(220, 38, 38, 0.10);
+    border-left-color: var(--brand-red);
+    color: var(--text-primary);
+  }
+
+  &.alert-success {
+    background: rgba(22, 163, 74, 0.10);
+    border-left-color: var(--brand-green);
+    color: var(--text-primary);
+  }
+}
+
+.badge-group {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background: var(--brand-gradient);
+  color: #FFFFFF;
+}
+
+// Points chip
+.points-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 800;
+  background: rgba(220, 38, 38, 0.14);
+  color: var(--brand-red);
+  border: 1.5px solid rgba(220, 38, 38, 0.25);
+}
+
+// ============================================================
+// LOADING
+// ============================================================
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  min-height: 100vh;
+  background: var(--bg-overlay);
+}
+
+.loading-ball {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.35) 0%, transparent 55%),
+    linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+  animation: rotateBall 1.2s linear infinite;
+  box-shadow: var(--shadow-glow);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255,255,255,0.25);
+    animation: rotateBall 2s linear infinite reverse;
+  }
+}
+
+.loading-dots {
+  display: flex; gap: 8px; align-items: center;
+
+  span {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    animation: pulseDot 1.4s ease-in-out infinite;
+
+    &:nth-child(1) { background: var(--brand-accent);           animation-delay: 0s; }
+    &:nth-child(2) { background: var(--brand-red);  animation-delay: 0.2s; }
+    &:nth-child(3) { background: var(--brand-gold); animation-delay: 0.4s; }
+    &:nth-child(4) { background: var(--brand-green);animation-delay: 0.6s; }
+  }
+}
+
+.loading-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+// ============================================================
+// LOGIN PAGE
+// ============================================================
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-overlay);
+  padding: 2rem 1rem;
+  animation: fadeIn 0.5s ease;
+}
+
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(20px);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  animation: scaleIn 0.4s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent), var(--brand-gold), var(--brand-red));
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+}
+
+.login-logo {
+  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin: 0 auto 1.5rem;
+  filter: drop-shadow(0 8px 24px rgba(59, 130, 246, 0.4));
+  animation: scaleIn 0.5s ease 0.1s both;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.03em;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+// ============================================================
+// ERROR / NOT FOUND PAGE
+// ============================================================
+
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-overlay);
+  animation: fadeIn 0.4s ease;
+}
+
+.error-code {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: clamp(6rem, 20vw, 12rem);
+  font-weight: 400;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent), var(--brand-gold));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+  letter-spacing: -2px;
+}
+
+.error-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+// ============================================================
+// PAGE HERO HEADER (inside pages)
+// ============================================================
+
+.page-hero {
+  padding: 2rem 0 1.5rem;
+  text-align: center;
+
+  h1 {
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--brand-accent), var(--brand-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+}
+
+// ============================================================
+// CARD INPUT — score input label
+// ============================================================
+
+.score-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+// ============================================================
+// COMPARISON RESULT
+// ============================================================
+
+.compare-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+// ============================================================
+// INSTRUCTION PAGE
+// ============================================================
+
+.instruction-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  animation: slideUp 0.35s ease both;
+  transition: var(--transition);
+
+  &:hover { box-shadow: var(--shadow-md); }
+
+  h5 {
+    color: var(--brand-accent);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  p, li {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+// ============================================================
+// CARD ANIMATION DELAYS (staggered grid)
+// ============================================================
+
+.card-animate {
+  animation: slideUp 0.35s ease both;
+
+  &:nth-child(1)  { animation-delay: 0.00s; }
+  &:nth-child(2)  { animation-delay: 0.05s; }
+  &:nth-child(3)  { animation-delay: 0.10s; }
+  &:nth-child(4)  { animation-delay: 0.15s; }
+  &:nth-child(5)  { animation-delay: 0.20s; }
+  &:nth-child(6)  { animation-delay: 0.25s; }
+  &:nth-child(7)  { animation-delay: 0.30s; }
+  &:nth-child(8)  { animation-delay: 0.35s; }
+}
+
+// ============================================================
+// SPINNER (Bootstrap overrides)
+// ============================================================
+
+.spinner-border, .spinner-grow {
+  color: var(--brand-accent) !important;
+}
+
+// ============================================================
+// RESPONSIVE UTILITIES
+// ============================================================
+
+@media (max-width: 576px) {
+  .login-card { padding: 2rem 1.25rem; border-radius: var(--radius-lg); }
+  .error-code { font-size: clamp(5rem, 18vw, 8rem); }
+}

@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { Layout } from "../containers/Layout";
 import { AuthProvider } from "../context/authContext";
+import { ThemeProvider } from "../context/themeContext";
 import { SERVERPATH } from "../config/configuracion";
 import store from "../redux/store";
 
@@ -28,6 +29,7 @@ const Instructions = lazy(()=>import('../pages/Instructions'));
 const App = () => {
   return (
     <BrowserRouter>
+     <ThemeProvider>
      <AuthProvider>
       <Provider store={store}>   
         <Suspense fallback={<Loading />}>        
@@ -55,6 +57,7 @@ const App = () => {
           </Suspense>
         </Provider>
      </AuthProvider>
+     </ThemeProvider>
     </BrowserRouter>
   );
 };

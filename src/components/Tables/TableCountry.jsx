@@ -1,78 +1,64 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useCallback, useRef, useMemo, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { Container } from "react-bootstrap";
 import { LoadingComponent } from "../SpinerCarga/LoadingComponent";
 import { MesajeNoData } from "../Mesages/MesajeNoData";
 import { CardUser } from "../Cards/CardUser";
 import { InputFormFloating } from "../Inputs/InputFormFloating";
-import { seleccionMensaje } from "../../config/configuracion";
-import { paginacionOpciones } from "../../config/configuracion";
-import { compactGrid } from "../../theme/tableTheme";
+import { seleccionMensaje, paginacionOpciones } from "../../config/configuracion";
+import { getTableStyles, getTableTheme, posicionStyle, punteoStyle } from "../../theme/tableTheme";
+import { ThemeContext } from "../../context/themeContext";
 import { apiCountryUsers } from "../../api/apiUsers";
 
-const columnas = [
-  {
-    name: "Pocición",
-    selector: (row) => row.pocicion,
-    sortable: false,
-    maxWidth: "90px",
-    minWidth: "70px",
-    center: true,
-    style: {
-      color: "#FDD835",
-      fontWeight: "bold",
-    },
-  },
-  {
-    name: "Nombre",
-    selector: (row) => row.nombre,
-    wrap: true,
-    sortable: true,
-  },
-  {
-    name: "DPI",
-    selector: (row) => `${row.dpi.substring(0, 5)}...3325120101...`,
-    sortable: true,
-    hide: "md",
-    wrap: true,
-  },
-  {
-    name: "Punteo",
-    selector: (row) => row.punteo,
-    sortable: true,
-    maxWidth: "90px",
-    minWidth: "80px",
-    center: true,
-    hide: "sm",
-    style: {
-      color: "red",
-      fontWeight: "bold",
-    },
-  },
-];
-
 export const TableCountry = ({ idCountry, width, title }) => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+
   const [users, setUsers] = useState([]);
   const [pending, setPending] = useState(true);
   const [search, setSearch] = useState("");
   const searchInput = useRef(null);
 
+  const columnas = [
+    {
+      name: "Posición",
+      selector: (row) => row.pocicion,
+      sortable: false,
+      maxWidth: "90px",
+      minWidth: "70px",
+      center: true,
+      style: posicionStyle(isDark),
+    },
+    {
+      name: "Nombre",
+      selector: (row) => row.nombre,
+      wrap: true,
+      sortable: true,
+    },
+    {
+      name: "DPI",
+      selector: (row) => `${row.dpi.substring(0, 5)}·····`,
+      sortable: true,
+      hide: "md",
+      wrap: true,
+    },
+    {
+      name: "Punteo",
+      selector: (row) => row.punteo,
+      sortable: true,
+      maxWidth: "90px",
+      minWidth: "80px",
+      center: true,
+      hide: "sm",
+      style: punteoStyle(isDark),
+    },
+  ];
+
   useEffect(() => {
     (async () => {
       const response = await apiCountryUsers(idCountry);
       if (response.data) {
-        const pociciones = response.data.map((x, inx) => {
-          return {
-            ...x,
-            pocicion: inx + 1,
-          };
-        });
+        const pociciones = response.data.map((x, inx) => ({ ...x, pocicion: inx + 1 }));
         setUsers(pociciones);
       }
       setPending(false);
@@ -84,16 +70,15 @@ export const TableCountry = ({ idCountry, width, title }) => {
   }, []);
 
   const dataFiltered = useMemo(
-    () =>
-      users.filter((user) => {
-        return user.nombre.toLowerCase().includes(search.toLowerCase().trim());
-      }),
+    () => users.filter((user) =>
+      user.nombre.toLowerCase().includes(search.toLowerCase().trim())
+    ),
     [users, search]
   );
 
   const ExpandedComponent = ({ data }) => (
-    <div className="d-flex justify-content-center">
-      <CardUser data={data} variant={"primary"} />
+    <div className="d-flex justify-content-center py-3">
+      <CardUser data={data} variant={isDark ? "dark" : "light"} />
     </div>
   );
 
@@ -112,29 +97,28 @@ export const TableCountry = ({ idCountry, width, title }) => {
         contextMessage={seleccionMensaje}
         columns={columnas}
         data={dataFiltered}
-        title={`${title}`}
+        title={`🏆 ${title}`}
         pagination
         expandableRows={width}
         fixedHeader
         fixedHeaderScrollHeight="500px"
         expandableRowsComponent={ExpandedComponent}
         paginationComponentOptions={paginacionOpciones}
-        theme="individuality"
+        theme={getTableTheme(isDark)}
         highlightOnHover
+        striped
         progressPending={pending}
-        progressComponent={<LoadingComponent variant="light" />}
+        progressComponent={<LoadingComponent variant={isDark ? "light" : "primary"} />}
         noDataComponent={
           <MesajeNoData
-            mesaje={
-              search
-                ? `No se encontraros usuarios con ${search}`
-                : "Aun no hay Usuarios registrados"
+            mesaje={search
+              ? `No se encontraron usuarios con "${search}"`
+              : "Aún no hay usuarios registrados"
             }
           />
         }
-        customStyles={compactGrid}
+        customStyles={getTableStyles(isDark)}
       />
     </Container>
   );
 };
-

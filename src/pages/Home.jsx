@@ -41,9 +41,10 @@ const Home = () => {
 
   return (
     <div className="bg-container page-wrap">
-      <h1 className="text-center fw-bold pt-3">
-        Partidos del Mundial Qatar 2022
-      </h1>
+      <div className="page-hero">
+        <h1>Partidos del <span className="gradient-text">Mundial 2026</span></h1>
+        <p>USA · Canadá · México</p>
+      </div>
       {!loading ? (
         <Container className="py-5">
           <InputFormFloating

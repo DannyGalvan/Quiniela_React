@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Form, Card, Row, Col, Image, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "../../hooks/useForm";
 import { apiPostPartidos } from "../../api/apiPartidos";
@@ -15,47 +15,27 @@ const initialForm = {
   golesEquipo2: "",
 };
 
-const validate = (form)=>{
-  const errors = {
+const validate = (form) => {
+  if (form.golesEquipo1 < 0) form.golesEquipo1 = 0;
+  if (form.golesEquipo2 < 0) form.golesEquipo2 = 0;
+  return {};
+};
 
-  }
-
-  if (form.golesEquipo1 < 0) {
-    form.golesEquipo1 = 0;
-  }
-  if (form.golesEquipo2 < 0) {
-    form.golesEquipo2 = 0;
-  }
-
-  return errors
-}
-
-export const CardMatched = ({ data,actualiza }) => {
+export const CardMatched = ({ data, actualiza }) => {
   const { authState } = useContext(AuthContext);
-
   initialForm.idUsuario = authState.user;
 
   const enviarDatos = async (form) => {
     const result = await apiPostPartidos(form);
     if (result.exito) {
-      Toast.fire({
-        icon: "success",
-        title: `${result.mensaje}`,
-      });
-      actualiza(form.idPartido,form.golesEquipo1,form.golesEquipo2);
-    }else{
-      Toast.fire({
-        icon: "error",
-        title: `${result.mensaje}`,
-      });
-    }    
+      Toast.fire({ icon: "success", title: `${result.mensaje}` });
+      actualiza(form.idPartido, form.golesEquipo1, form.golesEquipo2);
+    } else {
+      Toast.fire({ icon: "error", title: `${result.mensaje}` });
+    }
   };
 
-  const { form, handleChange, handleSubmit } = useForm(
-    initialForm,
-    validate,
-    enviarDatos
-  );
+  const { form, handleChange, handleSubmit } = useForm(initialForm, validate, enviarDatos);
 
   const now = new Date();
   const match = new Date(data.fechaPartido);
@@ -63,76 +43,65 @@ export const CardMatched = ({ data,actualiza }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Card className="bg-card">
-        <Card.Body>
-          <Card.Title className="text-center fw-bold">
-            Partido del{" "}
-            <Moment date={new Date(data.fechaPartido)} format="DD/MM/YYYY" />{" "}
-            Grupo {data.grupoEquipo1}
-          </Card.Title>
-          <Row>
+      <div className="bg-card card-animate p-3">
+        <div className="d-flex align-items-center justify-content-between mb-3">
+          <span className="match-date-badge">⚽ Grupo {data.grupoEquipo1}</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            <Moment date={new Date(data.fechaPartido)} format="DD/MM/YYYY" />
+          </span>
+        </div>
+
+        <input
+          name="idPartido"
+          value={(form.idPartido = data.idPartido)}
+          type="hidden"
+          required
+        />
+
+        <div className="team-row">
+          <img src={logoImage(`./${data.imagenEquipo1}`)} alt={data.nombreEquipo1} />
+          <span className="team-name">{data.nombreEquipo1}</span>
+          <div className="d-flex flex-column align-items-center">
+            <span className="score-label">Goles</span>
             <input
               className="input-gol"
-              name={`idPartido`}
-              value={(form.idPartido = data.idPartido)}
-              type="hidden"
+              name="golesEquipo1"
+              value={form.golesEquipo1}
+              placeholder={data.golesEquipo1}
+              onChange={handleChange}
+              type="number"
+              disabled={disabled}
               required
             />
-          </Row>
-          <Row>
-            <Col xs={"6"}>
-              <Image src={logoImage(`./${data.imagenEquipo1}`)} />{" "}
-              <span className="fw-bold">{data.nombreEquipo1}</span>
-            </Col>
-            <Col xs={"6"} className="mt-2 d-flex justify-content-center">
-              <div className="fw-bold">
-                <strong className="me-3">Goles: </strong>
-                <input
-                  className="input-gol"
-                  name={`golesEquipo1`}
-                  value={form.golesEquipo1}
-                  placeholder={data.golesEquipo1}
-                  onChange={handleChange}
-                  type="number"
-                  disabled={disabled}
-                  required
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={"6"}>
-              <Image src={logoImage(`./${data.imagenEquipo2}`)} />
-              <span className="fw-bold">{data.nombreEquipo2}</span>
-            </Col>
-            <Col xs={"6"} className="mt-2 d-flex justify-content-center">
-              <div className="fw-bold">
-                <strong className="me-3">Goles: </strong>
-                <input
-                  className="input-gol"
-                  name={`golesEquipo2`}
-                  value={form.golesEquipo2}
-                  placeholder={data.golesEquipo2}
-                  onChange={handleChange}
-                  type="number"
-                  disabled={disabled}
-                  required
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row className="pt-3 px-2">
-            <Button
-              variant="primary"
-              type="submit"
-              style={{ background: "#48823F", borderColor: "white" }}
+          </div>
+        </div>
+
+        <div className="vs-divider">vs</div>
+
+        <div className="team-row">
+          <img src={logoImage(`./${data.imagenEquipo2}`)} alt={data.nombreEquipo2} />
+          <span className="team-name">{data.nombreEquipo2}</span>
+          <div className="d-flex flex-column align-items-center">
+            <span className="score-label">Goles</span>
+            <input
+              className="input-gol"
+              name="golesEquipo2"
+              value={form.golesEquipo2}
+              placeholder={data.golesEquipo2}
+              onChange={handleChange}
+              type="number"
               disabled={disabled}
-            >
-              {data.golesEquipo1 != '--' ? "Modificar Datos" : "Guardar Datos"}
-            </Button>
-          </Row>
-        </Card.Body>
-      </Card>
+              required
+            />
+          </div>
+        </div>
+
+        <div className="mt-3">
+          <button className="btn-wc-primary" type="submit" disabled={disabled}>
+            {data.golesEquipo1 != '--' ? "✏ Modificar Datos" : "💾 Guardar Datos"}
+          </button>
+        </div>
+      </div>
     </Form>
   );
 };
