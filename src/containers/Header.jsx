@@ -53,77 +53,107 @@ const Header = () => {
                 🏠 Inicio
               </Link>
 
+              {/* Mi Quiniela — todos los usuarios */}
+              <NavDropdown
+                title="⚽ Mi Quiniela"
+                id="dropdown-quiniela"
+                align={{ md: "end" }}
+              >
+                <NavDropdown.Header>Fase de Grupos</NavDropdown.Header>
+                <Link className="dropdown-item" to={`${SERVERPATH}/post-group`}>
+                  Llenar Predicciones por Grupo
+                </Link>
+                <Link className="dropdown-item" to={`${SERVERPATH}/matches`}>
+                  Ver Todos los Partidos de Grupos
+                </Link>
+
+                <NavDropdown.Divider />
+
+                <NavDropdown.Header>Eliminatorias</NavDropdown.Header>
+                <Link className="dropdown-item" to={`${SERVERPATH}/post-finales`}>
+                  Llenar Predicciones Eliminatorias
+                </Link>
+
+                <NavDropdown.Divider />
+
+                <Link className="dropdown-item" to={`${SERVERPATH}/instructions`}>
+                  📖 Instrucciones
+                </Link>
+              </NavDropdown>
+
+              {/* Resultados — todos los usuarios */}
               <NavDropdown
                 title="📊 Resultados"
                 id="dropdown-resultados"
                 align={{ md: "end" }}
               >
-                {authState.isAdmin && (
-                  <Link
-                    className="dropdown-item"
-                    to={`${SERVERPATH}/table-result-country`}
-                  >
-                    Clasificación Todos los Países
-                  </Link>
-                )}
+                {/* Fase de grupos */}
+                <NavDropdown.Header>Fase de Grupos</NavDropdown.Header>
                 <Link className="dropdown-item" to={`${SERVERPATH}/my-info`}>
-                  Mis Resultados Por Grupos
+                  Mis Predicciones por Grupo
                 </Link>
                 <Link className="dropdown-item" to={`${SERVERPATH}/comparation-group`}>
-                  Comparación Grupos
+                  Comparación por Grupo
                 </Link>
+                <Link className="dropdown-item" to={`${SERVERPATH}/table-result`}>
+                  Tabla de Clasificación Grupos
+                </Link>
+
                 <NavDropdown.Divider />
+
+                {/* Fases eliminatorias */}
+                <NavDropdown.Header>Eliminatorias</NavDropdown.Header>
+                <Link className="dropdown-item" to={`${SERVERPATH}/my-info-finales`}>
+                  Mis Predicciones por Fase
+                </Link>
+                <Link className="dropdown-item" to={`${SERVERPATH}/comparation-finales`}>
+                  Comparación por Fase
+                </Link>
+                <Link className="dropdown-item" to={`${SERVERPATH}/table-result-finales`}>
+                  Tabla de Clasificación Eliminatorias
+                </Link>
+
+                <NavDropdown.Divider />
+
+                {/* Generales */}
+                <NavDropdown.Header>General</NavDropdown.Header>
                 <Link className="dropdown-item" to={`${SERVERPATH}/my-result`}>
                   Todos Mis Resultados
                 </Link>
                 <Link className="dropdown-item" to={`${SERVERPATH}/comparation`}>
                   Comparación Todos
                 </Link>
-                <NavDropdown.Divider />
-                <Link className="dropdown-item" to={`${SERVERPATH}/table-result`}>
-                  Tabla de Clasificación
-                </Link>
               </NavDropdown>
 
-              <NavDropdown
-                title="⚽ Llenar Quiniela"
-                id="dropdown-quiniela"
-                align={{ md: "end" }}
-              >
-                {authState.isAdmin && (
+              {/* Administración — solo admin */}
+              {authState.isAdmin && (
+                <NavDropdown
+                  title="⚙️ Administración"
+                  id="dropdown-admin"
+                  align={{ md: "end" }}
+                >
                   <Link className="dropdown-item" to={`${SERVERPATH}/results`}>
                     Ingresar Resultado Grupos
                   </Link>
-                )}
-                {authState.isAdmin && (
                   <Link className="dropdown-item" to={`${SERVERPATH}/results-finales`}>
                     Ingresar Resultado Finales
                   </Link>
-                )}
-                {authState.isAdmin && (
+                  <NavDropdown.Divider />
                   <Link className="dropdown-item" to={`${SERVERPATH}/mantenimiento-partidos`}>
                     Mantenimiento Partidos
                   </Link>
-                )}
-                {authState.isAdmin && (
                   <Link className="dropdown-item" to={`${SERVERPATH}/mantenimiento-finales`}>
                     Mantenimiento Finales
                   </Link>
-                )}
-                <Link className="dropdown-item" to={`${SERVERPATH}/instructions`}>
-                  Instrucciones
-                </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/post-group`}>
-                  Por Grupos
-                </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/post-finales`}>
-                  Eliminatorias
-                </Link>
-                <NavDropdown.Divider />
-                <Link className="dropdown-item" to={`${SERVERPATH}/matches`}>
-                  Todos Los Partidos
-                </Link>
-              </NavDropdown>
+                  <NavDropdown.Divider />
+                  <Link className="dropdown-item" to={`${SERVERPATH}/table-result-country`}>
+                    Clasificación Países — Grupos
+                  </Link>
+                  <Link className="dropdown-item" to={`${SERVERPATH}/table-result-country-finales`}>
+                    Clasificación Países — Eliminatorias
+                  </Link>
+                </NavDropdown>
+              )}
 
               <Nav.Link onClick={cerrarSesion}>
                 🚪 Cerrar Sesión

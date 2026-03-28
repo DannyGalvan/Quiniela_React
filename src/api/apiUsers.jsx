@@ -26,5 +26,11 @@ const apiFetch = async (url) => {
 /** GET /api/Usuario — usuarios del mismo país (punteo fase grupos) */
 export const apiUsuarios = () => apiFetch(`${API}/Usuario`);
 
-/** GET /api/Usuario/Pais/{id} — usuarios de un país específico */
+/** GET /api/Usuario/Final — usuarios del mismo país (punteo eliminatorias) */
+export const apiUsuariosFinales = () => apiFetch(`${API}/Usuario/Final`);
+
+/** GET /api/Usuario/Pais/{id} — usuarios de un país específico (fase grupos) */
 export const apiCountryUsers = (idCountry) => apiFetch(`${API}/Usuario/Pais/${idCountry}`);
+
+/** GET /api/Usuario/Final/Pais/{id} — usuarios de un país específico (eliminatorias) */
+export const apiCountryUsersFinales = (idCountry) => apiFetch(`${API}/Usuario/Final/Pais/${idCountry}`);

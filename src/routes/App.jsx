@@ -29,6 +29,10 @@ const Instructions = lazy(()=>import('../pages/Instructions'));
 const MantenimientoPartidos = lazy(()=>import('../pages/MantenimientoPartidos'));
 const MantenimientoFinales = lazy(()=>import('../pages/MantenimientoFinales'));
 const PostFinales = lazy(()=>import('../pages/PostFinales'));
+const MyInfoFinales = lazy(()=>import('../pages/MyInfoFinales'));
+const CompareFinales = lazy(()=>import('../pages/CompareFinales'));
+const TableResultsFinales = lazy(()=>import('../pages/TableResultsFinales'));
+const TableResultsCountryFinales = lazy(()=>import('../pages/TableResultsCountryFinales'));
 
 const App = () => {
   return (
@@ -47,6 +51,10 @@ const App = () => {
                   <Route path={`${SERVERPATH}/my-result`} element={<ProtectedRoute><MyResult /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/comparation`} element={<ProtectedRoute><CompareResult /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/comparation-group`} element={<ProtectedRoute><CompareGroup /></ProtectedRoute>} />
+                  <Route path={`${SERVERPATH}/my-info-finales`} element={<ProtectedRoute><MyInfoFinales /></ProtectedRoute>} />
+                  <Route path={`${SERVERPATH}/comparation-finales`} element={<ProtectedRoute><CompareFinales /></ProtectedRoute>} />
+                  <Route path={`${SERVERPATH}/table-result-finales`} element={<ProtectedRoute><TableResultsFinales /></ProtectedRoute>} />
+                  <Route path={`${SERVERPATH}/table-result-country-finales`} element={<ProtectedUnautorized><TableResultsCountryFinales /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/table-result`} element={<ProtectedRoute><TableResults /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/table-result-country`} element={<ProtectedUnautorized><TableResultsCountry /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/results`} element={<ProtectedUnautorized><Results /></ProtectedUnautorized>} />

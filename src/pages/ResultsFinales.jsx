@@ -26,18 +26,18 @@ const agruparPorFase = (ps) =>
     return acc;
   }, {});
 
-const BtnEquipo = ({ eq, selected, onClick }) => (
-  <button type="button" onClick={onClick} style={{
+const BtnEquipo = ({ eq, selected }) => (
+  <div style={{
     flex: 1, padding: "0.65rem 0.75rem", borderRadius: "var(--radius-sm)",
     border: selected ? "2px solid var(--brand-accent)" : "1.5px solid var(--border-color)",
     background: selected ? "rgba(59,130,246,0.12)" : "var(--bg-surface)",
     color: "var(--text-primary)", fontWeight: selected ? 700 : 500,
-    fontSize: "0.875rem", cursor: "pointer", transition: "var(--transition)",
+    fontSize: "0.875rem", userSelect: "none",
     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
   }}>
     {eq.img && <img src={eq.img} alt={eq.nombre} style={{ width: 24, height: 16, objectFit: "cover", borderRadius: 2 }} />}
     {eq.nombre}{selected && " ✓"}
-  </button>
+  </div>
 );
 
 const ResultsFinales = () => {
@@ -84,14 +84,29 @@ const ResultsFinales = () => {
     }
   }, [partidos]);
 
-  const handleGoles = (equipo, valor) => {
-    const g1 = equipo === 1 ? Number(valor) : Number(goles1);
-    const g2 = equipo === 2 ? Number(valor) : Number(goles2);
-    if (equipo === 1) setGoles1(valor); else setGoles2(valor);
-    if (valor !== "" && goles1 !== "" && goles2 !== "") {
-      if (g1 > g2)      setGanador(String(partido.idEquipo1));
-      else if (g2 > g1) setGanador(String(partido.idEquipo2));
+  const handlePenales = (equipo, valor) => {
+    if (equipo === 1) setPen1(valor); else setPen2(valor);
+    const newP1 = equipo === 1 ? valor : pen1;
+    const newP2 = equipo === 2 ? valor : pen2;
+    if (newP1 !== "" && newP2 !== "") {
+      const p1 = Number(newP1), p2 = Number(newP2);
+      if (p1 > p2)      setGanador(String(partido.idEquipo1));
+      else if (p2 > p1) setGanador(String(partido.idEquipo2));
       else              setGanador("");
+    } else {
+      setGanador("");
+    }
+  };
+
+  const handleGoles = (equipo, valor) => {
+    if (equipo === 1) setGoles1(valor); else setGoles2(valor);
+    const newG1 = equipo === 1 ? valor : goles1;
+    const newG2 = equipo === 2 ? valor : goles2;
+    if (newG1 !== "" && newG2 !== "") {
+      const n1 = Number(newG1), n2 = Number(newG2);
+      if (n1 > n2)      { setGanador(String(partido.idEquipo1)); setHuboPenales(false); setPen1(""); setPen2(""); }
+      else if (n2 > n1) { setGanador(String(partido.idEquipo2)); setHuboPenales(false); setPen1(""); setPen2(""); }
+      else              { setGanador(""); }
     }
   };
 
@@ -105,10 +120,30 @@ const ResultsFinales = () => {
       Toast.fire({ icon: "warning", title: "Selecciona el equipo ganador" });
       return;
     }
+    if (esEmpate && !huboPenales) {
+      Toast.fire({ icon: "warning", title: "Hay empate — activa 'Hubo penales' para definir ganador" });
+      return;
+    }
     if (huboPenales && (pen1 === "" || pen2 === "")) {
       Toast.fire({ icon: "warning", title: "Ingresa el marcador de penales" });
       return;
     }
+
+    const nombreGanador =
+      String(ganador) === String(partido.idEquipo1) ? partido.nombreEquipo1 : partido.nombreEquipo2;
+    const penSufijo = huboPenales ? ` (pen. ${pen1}-${pen2})` : "";
+    const { isConfirmed } = await import("sweetalert2").then((Swal) =>
+      Swal.default.fire({
+        title: "¿Confirmar resultado?",
+        html: `<b>${partido.nombreEquipo1} ${goles1} — ${goles2} ${partido.nombreEquipo2}</b><br/>Gana: <b>${nombreGanador}</b>${penSufijo}`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "var(--brand-accent, #3b82f6)",
+      })
+    );
+    if (!isConfirmed) return;
 
     setSaving(true);
     try {
@@ -144,7 +179,7 @@ const ResultsFinales = () => {
 
   const img1 = partido ? getImg(partido.imagenEquipo1) : null;
   const img2 = partido ? getImg(partido.imagenEquipo2) : null;
-  const tieneResultado = partido && (partido.golesEquipo1 > 0 || partido.golesEquipo2 > 0);
+  const tieneResultado = partido && partido.ganador > 0;
   const esEmpate = goles1 !== "" && goles2 !== "" && Number(goles1) === Number(goles2);
 
   const resumenTexto = () => {
@@ -219,19 +254,36 @@ const ResultsFinales = () => {
               <div className="wc-field mt-4">
                 <label className="wc-field__label">
                   Equipo Ganador
-                  {esEmpate && <span style={{ color: "var(--brand-gold)", marginLeft: 6, fontWeight: 700 }}>— Empate, elige ganador por penales</span>}
+                  {esEmpate && huboPenales
+                    ? <span style={{ color: "var(--brand-gold)", marginLeft: 6, fontWeight: 700 }}>— Determinado por penales</span>
+                    : ganador
+                      ? <span style={{ color: "var(--brand-green)", marginLeft: 6, fontWeight: 600 }}>— Determinado por marcador</span>
+                      : null}
                 </label>
                 <div style={{ display: "flex", gap: 12, marginTop: 4 }}>
-                  <BtnEquipo eq={{ id: partido.idEquipo1, nombre: partido.nombreEquipo1, img: img1 }} selected={String(ganador) === String(partido.idEquipo1)} onClick={() => setGanador(String(partido.idEquipo1))} />
-                  <BtnEquipo eq={{ id: partido.idEquipo2, nombre: partido.nombreEquipo2, img: img2 }} selected={String(ganador) === String(partido.idEquipo2)} onClick={() => setGanador(String(partido.idEquipo2))} />
+                  <BtnEquipo
+                    eq={{ id: partido.idEquipo1, nombre: partido.nombreEquipo1, img: img1 }}
+                    selected={String(ganador) === String(partido.idEquipo1)}
+                  />
+                  <BtnEquipo
+                    eq={{ id: partido.idEquipo2, nombre: partido.nombreEquipo2, img: img2 }}
+                    selected={String(ganador) === String(partido.idEquipo2)}
+                  />
                 </div>
               </div>
 
               {/* Toggle penales */}
               <div className="mt-4" style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <button type="button" onClick={() => { setHuboPenales((v) => !v); setPen1(""); setPen2(""); }}
+                <button type="button" disabled={!esEmpate} onClick={() => {
+                  const turning = !huboPenales;
+                  setHuboPenales(turning);
+                  setPen1(""); setPen2("");
+                  if (!turning) setGanador("");
+                }}
                   style={{
-                    padding: "0.5rem 1.25rem", borderRadius: "var(--radius-sm)", cursor: "pointer",
+                    padding: "0.5rem 1.25rem", borderRadius: "var(--radius-sm)",
+                    cursor: esEmpate ? "pointer" : "not-allowed",
+                    opacity: esEmpate ? 1 : 0.4,
                     border: huboPenales ? "2px solid var(--brand-gold)" : "1.5px solid var(--border-color)",
                     background: huboPenales ? "rgba(245,158,11,0.12)" : "var(--bg-surface)",
                     color: huboPenales ? "var(--brand-gold)" : "var(--text-secondary)",
@@ -249,14 +301,14 @@ const ResultsFinales = () => {
               {/* Marcador de penales */}
               {huboPenales && (
                 <div style={{ display: "flex", gap: 16, marginTop: 12, alignItems: "center" }}>
-                  {[{ nombre: partido.nombreEquipo1, val: pen1, set: setPen1 },
-                    { nombre: partido.nombreEquipo2, val: pen2, set: setPen2 }].map(({ nombre, val, set }, i) => (
+                  {[{ nombre: partido.nombreEquipo1, val: pen1, eq: 1 },
+                    { nombre: partido.nombreEquipo2, val: pen2, eq: 2 }].map(({ nombre, val, eq }, i) => (
                     <React.Fragment key={i}>
                       {i === 1 && <span style={{ color: "var(--text-muted)", fontWeight: 700 }}>—</span>}
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                         <span className="score-label">{nombre}</span>
                         <input className="input-gol" type="number" min="0" max="99" value={val}
-                          onChange={(e) => set(e.target.value)} required={huboPenales} />
+                          onChange={(e) => handlePenales(eq, e.target.value)} required={huboPenales} />
                       </div>
                     </React.Fragment>
                   ))}
