@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { apiEquipos, apiFinales, apiNuevoFinal } from "../api/apiPartidos";
 import { Toast } from "../components/Swal/Toast";
 import Loading from "./Loading/Loading";
-import Moment from "react-moment";
+import { formatDate } from "../utils/dateFormatter";
 
 const FASES = ["Octavos", "Cuartos", "Semifinal", "Final"];
 
@@ -251,7 +251,7 @@ const MantenimientoFinales = () => {
                         {p.nombreEquipo1} <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>vs</span> {p.nombreEquipo2}
                       </span>
                       <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600, whiteSpace: "nowrap" }}>
-                        <Moment date={new Date(p.fechaPartido)} format="DD/MM/YYYY" />
+                        {formatDate(new Date(p.fechaPartido), "DD/MM/YYYY")}
                       </span>
                     </div>
                   ))}

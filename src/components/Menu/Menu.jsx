@@ -2,8 +2,9 @@ import React from "react";
 import { Nav, Navbar, NavDropdown, Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SERVERPATH } from "../../config/configuracion";
+import { createImageLoader } from "../../utils/imageLoader";
 
-const logoImage = require.context("../../Banderas", true);
+const logoImage = createImageLoader("../../Banderas");
 
 export const Menu = ({ cerrarSesion, isAdmin, show, handleClose, theme, toggleTheme }) => {
   return (

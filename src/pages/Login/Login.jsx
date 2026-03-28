@@ -8,8 +8,9 @@ import { useForm } from "../../hooks/useForm";
 import { InputFormFloating } from "../../components/Inputs/InputFormFloating";
 import { apiLogin } from "../../api/apiLogin";
 import { SERVERPATH } from "../../config/configuracion";
+import { createImageLoader } from "../../utils/imageLoader";
 
-const logoImage = require.context("../../Banderas", true);
+const logoImage = createImageLoader("../../Banderas");
 
 const initialForm = { dpi: "" };
 
@@ -33,7 +34,7 @@ const Login = () => {
     if (res.exito != 0) {
       signIn(res.data);
       dispatch(createUser(res.data));
-      navigate(`${SERVERPATH}`);
+      navigate(`/`);
     }
     return res;
   };
@@ -82,7 +83,7 @@ const Login = () => {
 
           <div className="text-center">
             <Link
-              to={`${SERVERPATH}/new_user`}
+              to={`/new_user`}
               style={{
                 color: 'var(--brand-accent)',
                 fontSize: '0.875rem',

@@ -1,12 +1,11 @@
 import React, {useContext} from 'react'
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
-import { SERVERPATH } from '../config/configuracion';
 
 const ProtectedLogin = ({children}) => {
     const {authState} = useContext(AuthContext);
     if (authState.isLoggedIn) {
-        return <Navigate to={`${SERVERPATH}`}/>
+        return <Navigate to={`/`}/>
     }
 
     return children

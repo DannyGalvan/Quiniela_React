@@ -1,7 +1,7 @@
 
-export const API = process.env.API_QUINIELA;
+export const API = import.meta.env.VITE_API_QUINIELA;
 
-export const SERVERPATH = process.env.SERVER_PATH;
+export const SERVERPATH = import.meta.env.VITE_SERVER_PATH;
 
 export const paginacionOpciones = {
     rowsPerPageText: 'Elementos Por Pagina',

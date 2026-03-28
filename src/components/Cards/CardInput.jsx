@@ -1,7 +1,8 @@
 import React from "react";
-import Moment from "react-moment";
+import { formatDate } from "../../utils/dateFormatter";
+import { createImageLoader } from "../../utils/imageLoader";
 
-const logoImage = require.context("../../Banderas", true);
+const logoImage = createImageLoader("../../Banderas");
 
 const getImg = (nombre) => {
   if (!nombre) return null;
@@ -27,7 +28,7 @@ export const CardInput = ({ data, id, form, handleChange }) => {
           ⚽ Grupo {data.grupoEquipo1}
         </span>
         <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
-          <Moment date={new Date(data.fechaPartido)} format="DD/MM/YYYY" />
+          {formatDate(new Date(data.fechaPartido), "DD/MM/YYYY")}
         </span>
       </div>
 

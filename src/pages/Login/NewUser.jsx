@@ -8,8 +8,9 @@ import { InputFormSelect } from "../../components/Inputs/InputFormSelect";
 import { apiNewUser } from "../../api/apiLogin";
 import { apiPaises } from "../../api/apiPaises";
 import { SERVERPATH } from "../../config/configuracion";
+import { createImageLoader } from "../../utils/imageLoader";
 
-const logoImage = require.context("../../Banderas", true);
+const logoImage = createImageLoader('../../Banderas');
 
 const initialForm = {
   nombre: "",
@@ -59,7 +60,7 @@ const Login = () => {
     const res = await apiNewUser(form);
     if (res.exito != 0) {
       signIn(res.data);
-      navigate(`${SERVERPATH}`);
+      navigate(`/`);
     }
     return res;
   };
@@ -127,7 +128,7 @@ const Login = () => {
 
           <div className="text-center">
             <Link
-              to={`${SERVERPATH}/login`}
+              to={`/login`}
               style={{
                 color: 'var(--brand-accent)',
                 fontSize: '0.875rem',

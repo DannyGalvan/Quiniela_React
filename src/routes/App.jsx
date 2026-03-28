@@ -42,31 +42,31 @@ const App = () => {
       <Provider store={store}>   
         <Suspense fallback={<Loading />}>        
               <Layout>
-                <Routes>              
-                  <Route path={`${SERVERPATH}`} element={<ProtectedRoute><Home /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/post-group`} element={<ProtectedRoute><PostGroup /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/matches`} element={<ProtectedRoute><Matches /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/post-finales`} element={<ProtectedRoute><PostFinales /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/my-info`} element={<ProtectedRoute><MyInfo /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/my-result`} element={<ProtectedRoute><MyResult /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/comparation`} element={<ProtectedRoute><CompareResult /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/comparation-group`} element={<ProtectedRoute><CompareGroup /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/my-info-finales`} element={<ProtectedRoute><MyInfoFinales /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/comparation-finales`} element={<ProtectedRoute><CompareFinales /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/table-result-finales`} element={<ProtectedRoute><TableResultsFinales /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/table-result-country-finales`} element={<ProtectedUnautorized><TableResultsCountryFinales /></ProtectedUnautorized>} />
-                  <Route path={`${SERVERPATH}/table-result`} element={<ProtectedRoute><TableResults /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/table-result-country`} element={<ProtectedUnautorized><TableResultsCountry /></ProtectedUnautorized>} />
-                  <Route path={`${SERVERPATH}/results`} element={<ProtectedUnautorized><Results /></ProtectedUnautorized>} />
-                  <Route path={`${SERVERPATH}/results-finales`} element={<ProtectedUnautorized><ResultsFinales /></ProtectedUnautorized>} />
-                  <Route path={`${SERVERPATH}/mantenimiento-partidos`} element={<ProtectedUnautorized><MantenimientoPartidos /></ProtectedUnautorized>} />
-                  <Route path={`${SERVERPATH}/mantenimiento-finales`} element={<ProtectedUnautorized><MantenimientoFinales /></ProtectedUnautorized>} />
-                  <Route path={`${SERVERPATH}/instructions`} element={<ProtectedRoute><Instructions /></ProtectedRoute>} />
-                  <Route path={`${SERVERPATH}/login`} element={<ProtectedLogin><Login /></ProtectedLogin>} />
-                  <Route path={`${SERVERPATH}/new_user`} element={<ProtectedLogin><NewUser /></ProtectedLogin>} />
-                  <Route path={`${SERVERPATH}/not_found`} element={<NotFound Numero={`Error 404`} Mensaje='La Pagina Que Buscas No Existe'/>} />
-                  <Route path={`${SERVERPATH}/expired`} element={<NotFound Numero={`Error 401`} Mensaje='La Sesion Ha Expirado'/>} />
-                  <Route path={`${SERVERPATH}/unauthorized`} element={<NotFound Numero={`Error 403`} Mensaje='No Tienes Permiso Para Visualizar Este Contenido'/>} />
+                <Routes basename={SERVERPATH}>              
+                  <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                  <Route path={`/post-group`} element={<ProtectedRoute><PostGroup /></ProtectedRoute>} />
+                  <Route path={`/matches`} element={<ProtectedRoute><Matches /></ProtectedRoute>} />
+                  <Route path={`/post-finales`} element={<ProtectedRoute><PostFinales /></ProtectedRoute>} />
+                  <Route path={`/my-info`} element={<ProtectedRoute><MyInfo /></ProtectedRoute>} />
+                  <Route path={`/my-result`} element={<ProtectedRoute><MyResult /></ProtectedRoute>} />
+                  <Route path={`/comparation`} element={<ProtectedRoute><CompareResult /></ProtectedRoute>} />
+                  <Route path={`/comparation-group`} element={<ProtectedRoute><CompareGroup /></ProtectedRoute>} />
+                  <Route path={`/my-info-finales`} element={<ProtectedRoute><MyInfoFinales /></ProtectedRoute>} />
+                  <Route path={`/comparation-finales`} element={<ProtectedRoute><CompareFinales /></ProtectedRoute>} />
+                  <Route path={`/table-result-finales`} element={<ProtectedRoute><TableResultsFinales /></ProtectedRoute>} />
+                  <Route path={`/table-result-country-finales`} element={<ProtectedUnautorized><TableResultsCountryFinales /></ProtectedUnautorized>} />
+                  <Route path={`/table-result`} element={<ProtectedRoute><TableResults /></ProtectedRoute>} />
+                  <Route path={`/table-result-country`} element={<ProtectedUnautorized><TableResultsCountry /></ProtectedUnautorized>} />
+                  <Route path={`/results`} element={<ProtectedUnautorized><Results /></ProtectedUnautorized>} />
+                  <Route path={`/results-finales`} element={<ProtectedUnautorized><ResultsFinales /></ProtectedUnautorized>} />
+                  <Route path={`/mantenimiento-partidos`} element={<ProtectedUnautorized><MantenimientoPartidos /></ProtectedUnautorized>} />
+                  <Route path={`/mantenimiento-finales`} element={<ProtectedUnautorized><MantenimientoFinales /></ProtectedUnautorized>} />
+                  <Route path={`/instructions`} element={<ProtectedRoute><Instructions /></ProtectedRoute>} />
+                  <Route path={`/login`} element={<ProtectedLogin><Login /></ProtectedLogin>} />
+                  <Route path={`/new_user`} element={<ProtectedLogin><NewUser /></ProtectedLogin>} />
+                  <Route path={`/not_found`} element={<NotFound Numero={`Error 404`} Mensaje='La Pagina Que Buscas No Existe'/>} />
+                  <Route path={`/expired`} element={<NotFound Numero={`Error 401`} Mensaje='La Sesion Ha Expirado'/>} />
+                  <Route path={`/unauthorized`} element={<NotFound Numero={`Error 403`} Mensaje='No Tienes Permiso Para Visualizar Este Contenido'/>} />
                   <Route path="*"element={ <NotFound  Numero={`Error 404`}  Mensaje="La Pagina Que Buscas No Existe"/>}/>            
                 </Routes>            
               </Layout>       

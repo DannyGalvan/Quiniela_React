@@ -30,7 +30,7 @@ const NotFound = (props) => {
       <div className="text-center px-3">
         <div className="error-code">{Numero}</div>
         <p className="error-message">{Mensaje}</p>
-        <Link to={`${SERVERPATH}`} className="btn-wc-primary" style={{ display: 'inline-block', width: 'auto', padding: '0.65rem 2rem' }}>
+        <Link to={`/`} className="btn-wc-primary" style={{ display: 'inline-block', width: 'auto', padding: '0.65rem 2rem' }}>
           ← Regresar al Inicio
         </Link>
       </div>

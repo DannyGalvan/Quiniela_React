@@ -1,36 +1,29 @@
-import { API, SERVERPATH } from "../config/configuracion";
-import { getCookie } from "./localStorage";
-
-const handleStatus = (status) => {
-  if (status === 403) location.href = `${SERVERPATH}/unauthorized`;
-  if (status === 401) { localStorage.clear(); location.href = `${SERVERPATH}/expired`; }
-};
-
-const apiFetch = async (url) => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.status === 200 || response.status === 400) return response.json();
-    handleStatus(response.status);
-  } catch (error) {
-    console.log(error);
-  }
-};
+import apiClient from '../config/axiosConfig';
 
 /** GET /api/Usuario — usuarios del mismo país (punteo fase grupos) */
-export const apiUsuarios = () => apiFetch(`${API}/Usuario`);
+export const apiUsuarios = () =>
+  apiClient.get('/Usuario').then(response => response.data).catch(error => {
+    console.log('apiUsuarios error:', error);
+    throw error;
+  });
 
 /** GET /api/Usuario/Final — usuarios del mismo país (punteo eliminatorias) */
-export const apiUsuariosFinales = () => apiFetch(`${API}/Usuario/Final`);
+export const apiUsuariosFinales = () =>
+  apiClient.get('/Usuario/Final').then(response => response.data).catch(error => {
+    console.log('apiUsuariosFinales error:', error);
+    throw error;
+  });
 
 /** GET /api/Usuario/Pais/{id} — usuarios de un país específico (fase grupos) */
-export const apiCountryUsers = (idCountry) => apiFetch(`${API}/Usuario/Pais/${idCountry}`);
+export const apiCountryUsers = (idCountry) =>
+  apiClient.get(`/Usuario/Pais/${idCountry}`).then(response => response.data).catch(error => {
+    console.log('apiCountryUsers error:', error);
+    throw error;
+  });
 
 /** GET /api/Usuario/Final/Pais/{id} — usuarios de un país específico (eliminatorias) */
-export const apiCountryUsersFinales = (idCountry) => apiFetch(`${API}/Usuario/Final/Pais/${idCountry}`);
+export const apiCountryUsersFinales = (idCountry) =>
+  apiClient.get(`/Usuario/Final/Pais/${idCountry}`).then(response => response.data).catch(error => {
+    console.log('apiCountryUsersFinales error:', error);
+    throw error;
+  });

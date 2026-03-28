@@ -4,9 +4,10 @@ import { AuthContext } from "../../context/authContext";
 import { useForm } from "../../hooks/useForm";
 import { apiPostPartidos } from "../../api/apiPartidos";
 import { Toast } from "../Swal/Toast";
-import Moment from "react-moment";
+import { formatDate } from "../../utils/dateFormatter";
+import { createImageLoader } from "../../utils/imageLoader";
 
-const logoImage = require.context("../../Banderas", true);
+const logoImage = createImageLoader("../../Banderas");
 
 const getImg = (nombre) => {
   if (!nombre) return null;
@@ -59,7 +60,7 @@ export const CardMatched = ({ data, actualiza }) => {
         <div className="d-flex align-items-center justify-content-between mb-3">
           <span className="match-date-badge">⚽ Grupo {data.grupoEquipo1}</span>
           <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
-            <Moment date={new Date(data.fechaPartido)} format="DD/MM/YYYY" />
+            {formatDate(new Date(data.fechaPartido), "DD/MM/YYYY")}
           </span>
         </div>
 

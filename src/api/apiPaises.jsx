@@ -1,20 +1,16 @@
-import { API, SERVERPATH } from "../config/configuracion";
-
-const handleStatus = (status) => {
-  if (status === 403) location.href = `${SERVERPATH}/unauthorized`;
-  if (status === 401) { localStorage.clear(); location.href = `${SERVERPATH}/expired`; }
-};
+import apiClient from '../config/axiosConfig';
 
 /** GET /api/Paises — catálogo de países */
 export const apiPaises = async () => {
   try {
-    const response = await fetch(`${API}/Paises`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (response.status === 200 || response.status === 400) return response.json();
-    handleStatus(response.status);
+    const response = await apiClient.get('/Paises');
+    return response.data;
   } catch (error) {
-    console.log(error);
+    const status = error.response?.status;
+    if (status === 400) {
+      return error.response.data;
+    }
+    console.log('apiPaises error:', error);
+    throw error;
   }
 };

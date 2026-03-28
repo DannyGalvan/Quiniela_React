@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import * as signalR from "@microsoft/signalr";
 
-const HUB_URL = `${process.env.API_QUINIELA?.replace("/api", "") ?? ""}/hubs/chat`;
+const HUB_URL = `${import.meta.env.VITE_API_QUINIELA?.replace("/api", "") ?? ""}/hubs/chat`;
 
 export const useChat = (token) => {
   const [messages, setMessages]     = useState([]);

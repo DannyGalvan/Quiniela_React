@@ -4,13 +4,15 @@ import { apiPartidos, apiPutPartidos, apiPostCalculo } from "../api/apiPartidos"
 import { Toast } from "../components/Swal/Toast";
 import { MesajeNoData } from "../components/Mesages/MesajeNoData";
 import Loading from "./Loading/Loading";
-import Moment from "react-moment";
+import { formatDate } from "../utils/dateFormatter";
+import { createImageLoader } from "../utils/imageLoader";
+
+const logoImage = createImageLoader("../Banderas");
 
 const getImg = (nombre) => {
   if (!nombre) return null;
   try {
-    const ctx = require.context("../Banderas", true);
-    return ctx(`./${nombre}`);
+    return logoImage(`./${nombre}`);
   } catch { return null; }
 };
 
@@ -171,7 +173,7 @@ const Results = () => {
                     </span>
                   )}
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600 }}>
-                    <Moment date={new Date(partido.fechaPartido)} format="DD/MM/YYYY" />
+                    {formatDate(new Date(partido.fechaPartido), "DD/MM/YYYY")}
                   </span>
                 </div>
               </div>

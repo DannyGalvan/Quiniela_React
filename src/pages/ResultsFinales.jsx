@@ -4,7 +4,8 @@ import { apiFinales, apiPutFinales, apiPostCalculoFinal } from "../api/apiPartid
 import { Toast } from "../components/Swal/Toast";
 import { MesajeNoData } from "../components/Mesages/MesajeNoData";
 import Loading from "./Loading/Loading";
-import Moment from "react-moment";
+import { formatDate } from "../utils/dateFormatter";
+import { createImageLoader } from "../utils/imageLoader";
 
 const FASES_ORDEN = ["Octavos", "Cuartos", "Semifinal", "Final"];
 const FASE_COLORS = {
@@ -12,9 +13,11 @@ const FASE_COLORS = {
   Semifinal: "var(--brand-red)",  Final: "var(--brand-green)",
 };
 
+const logoImage = createImageLoader("../Banderas");
+
 const getImg = (nombre) => {
   if (!nombre) return null;
-  try { return require.context("../Banderas", true)(`./${nombre}`); }
+  try { return logoImage(`./${nombre}`); }
   catch { return null; }
 };
 
@@ -228,7 +231,7 @@ const ResultsFinales = () => {
                     </span>
                   )}
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600 }}>
-                    <Moment date={new Date(partido.fechaPartido)} format="DD/MM/YYYY" />
+                    {formatDate(new Date(partido.fechaPartido), "DD/MM/YYYY")}
                   </span>
                 </div>
               </div>

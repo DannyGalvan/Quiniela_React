@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { resetUser } from "../redux/state/user";
 import { AuthContext } from "../context/authContext";
 import { ThemeContext } from "../context/themeContext";
-import { SERVERPATH } from "../config/configuracion";
+import { createImageLoader } from "../utils/imageLoader";
 
-const logoImage = require.context("../Banderas", true);
+const logoImage = createImageLoader('../Banderas');
 
 const Header = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Header = () => {
   const cerrarSesion = () => {
     dispatch(resetUser());
     logout();
-    navigate(`${SERVERPATH}/login`);
+    navigate(`/login`);
   };
 
   return (
@@ -26,7 +26,7 @@ const Header = () => {
       <Container fluid className="px-3">
 
         {/* Brand */}
-        <Link to={`${SERVERPATH}`} className="navbar-brand-wc">
+        <Link to={``} className="navbar-brand-wc">
           <img
             alt="Logo Mundial 2026"
             src={`${logoImage(`./LogoMundial.webp`)}`}
@@ -49,7 +49,7 @@ const Header = () => {
           <Navbar.Collapse id="main-navbar-collapse">
             <Nav className="ms-auto align-items-md-center gap-md-1">
 
-              <Link to={`${SERVERPATH}`} className="nav-link">
+              <Link to={``} className="nav-link">
                 🏠 Inicio
               </Link>
 
@@ -60,23 +60,23 @@ const Header = () => {
                 align={{ md: "end" }}
               >
                 <NavDropdown.Header>Fase de Grupos</NavDropdown.Header>
-                <Link className="dropdown-item" to={`${SERVERPATH}/post-group`}>
+                <Link className="dropdown-item" to={`/post-group`}>
                   Llenar Predicciones por Grupo
                 </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/matches`}>
+                <Link className="dropdown-item" to={`/matches`}>
                   Ver Todos los Partidos de Grupos
                 </Link>
 
                 <NavDropdown.Divider />
 
                 <NavDropdown.Header>Eliminatorias</NavDropdown.Header>
-                <Link className="dropdown-item" to={`${SERVERPATH}/post-finales`}>
+                <Link className="dropdown-item" to={`/post-finales`}>
                   Llenar Predicciones Eliminatorias
                 </Link>
 
                 <NavDropdown.Divider />
 
-                <Link className="dropdown-item" to={`${SERVERPATH}/instructions`}>
+                <Link className="dropdown-item" to={`/instructions`}>
                   📖 Instrucciones
                 </Link>
               </NavDropdown>
@@ -89,13 +89,13 @@ const Header = () => {
               >
                 {/* Fase de grupos */}
                 <NavDropdown.Header>Fase de Grupos</NavDropdown.Header>
-                <Link className="dropdown-item" to={`${SERVERPATH}/my-info`}>
+                <Link className="dropdown-item" to={`/my-info`}>
                   Mis Predicciones por Grupo
                 </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/comparation-group`}>
+                <Link className="dropdown-item" to={`/comparation-group`}>
                   Comparación por Grupo
                 </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/table-result`}>
+                <Link className="dropdown-item" to={`/table-result`}>
                   Tabla de Clasificación Grupos
                 </Link>
 
@@ -103,13 +103,13 @@ const Header = () => {
 
                 {/* Fases eliminatorias */}
                 <NavDropdown.Header>Eliminatorias</NavDropdown.Header>
-                <Link className="dropdown-item" to={`${SERVERPATH}/my-info-finales`}>
+                <Link className="dropdown-item" to={`/my-info-finales`}>
                   Mis Predicciones por Fase
                 </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/comparation-finales`}>
+                <Link className="dropdown-item" to={`/comparation-finales`}>
                   Comparación por Fase
                 </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/table-result-finales`}>
+                <Link className="dropdown-item" to={`/table-result-finales`}>
                   Tabla de Clasificación Eliminatorias
                 </Link>
 
@@ -117,10 +117,10 @@ const Header = () => {
 
                 {/* Generales */}
                 <NavDropdown.Header>General</NavDropdown.Header>
-                <Link className="dropdown-item" to={`${SERVERPATH}/my-result`}>
+                <Link className="dropdown-item" to={`/my-result`}>
                   Todos Mis Resultados
                 </Link>
-                <Link className="dropdown-item" to={`${SERVERPATH}/comparation`}>
+                <Link className="dropdown-item" to={`/comparation`}>
                   Comparación Todos
                 </Link>
               </NavDropdown>
@@ -132,24 +132,24 @@ const Header = () => {
                   id="dropdown-admin"
                   align={{ md: "end" }}
                 >
-                  <Link className="dropdown-item" to={`${SERVERPATH}/results`}>
+                  <Link className="dropdown-item" to={`/results`}>
                     Ingresar Resultado Grupos
                   </Link>
-                  <Link className="dropdown-item" to={`${SERVERPATH}/results-finales`}>
+                  <Link className="dropdown-item" to={`/results-finales`}>
                     Ingresar Resultado Finales
                   </Link>
                   <NavDropdown.Divider />
-                  <Link className="dropdown-item" to={`${SERVERPATH}/mantenimiento-partidos`}>
+                  <Link className="dropdown-item" to={`/mantenimiento-partidos`}>
                     Mantenimiento Partidos
                   </Link>
-                  <Link className="dropdown-item" to={`${SERVERPATH}/mantenimiento-finales`}>
+                  <Link className="dropdown-item" to={`/mantenimiento-finales`}>
                     Mantenimiento Finales
                   </Link>
                   <NavDropdown.Divider />
-                  <Link className="dropdown-item" to={`${SERVERPATH}/table-result-country`}>
+                  <Link className="dropdown-item" to={`/table-result-country`}>
                     Clasificación Países — Grupos
                   </Link>
-                  <Link className="dropdown-item" to={`${SERVERPATH}/table-result-country-finales`}>
+                  <Link className="dropdown-item" to={`/table-result-country-finales`}>
                     Clasificación Países — Eliminatorias
                   </Link>
                 </NavDropdown>
