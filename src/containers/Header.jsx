@@ -92,7 +92,12 @@ const Header = () => {
               >
                 {authState.isAdmin && (
                   <Link className="dropdown-item" to={`${SERVERPATH}/results`}>
-                    Ingresar Resultado
+                    Ingresar Resultado Grupos
+                  </Link>
+                )}
+                {authState.isAdmin && (
+                  <Link className="dropdown-item" to={`${SERVERPATH}/results-finales`}>
+                    Ingresar Resultado Finales
                   </Link>
                 )}
                 {authState.isAdmin && (
@@ -100,11 +105,19 @@ const Header = () => {
                     Mantenimiento Partidos
                   </Link>
                 )}
+                {authState.isAdmin && (
+                  <Link className="dropdown-item" to={`${SERVERPATH}/mantenimiento-finales`}>
+                    Mantenimiento Finales
+                  </Link>
+                )}
                 <Link className="dropdown-item" to={`${SERVERPATH}/instructions`}>
                   Instrucciones
                 </Link>
                 <Link className="dropdown-item" to={`${SERVERPATH}/post-group`}>
                   Por Grupos
+                </Link>
+                <Link className="dropdown-item" to={`${SERVERPATH}/post-finales`}>
+                  Eliminatorias
                 </Link>
                 <NavDropdown.Divider />
                 <Link className="dropdown-item" to={`${SERVERPATH}/matches`}>

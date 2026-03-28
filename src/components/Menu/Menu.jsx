@@ -88,7 +88,16 @@ export const Menu = ({ cerrarSesion, isAdmin, show, handleClose, theme, toggleTh
                 to={`${SERVERPATH}/results`}
                 onClick={handleClose}
               >
-                Ingresar Resultado
+                Ingresar Resultado Grupos
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                className="dropdown-item"
+                to={`${SERVERPATH}/results-finales`}
+                onClick={handleClose}
+              >
+                Ingresar Resultado Finales
               </Link>
             )}
             {isAdmin && (
@@ -100,11 +109,23 @@ export const Menu = ({ cerrarSesion, isAdmin, show, handleClose, theme, toggleTh
                 Mantenimiento Partidos
               </Link>
             )}
+            {isAdmin && (
+              <Link
+                className="dropdown-item"
+                to={`${SERVERPATH}/mantenimiento-finales`}
+                onClick={handleClose}
+              >
+                Mantenimiento Finales
+              </Link>
+            )}
             <Link className="dropdown-item" to={`${SERVERPATH}/instructions`} onClick={handleClose}>
               Instrucciones
             </Link>
             <Link className="dropdown-item" to={`${SERVERPATH}/post-group`} onClick={handleClose}>
               Por Grupos
+            </Link>
+            <Link className="dropdown-item" to={`${SERVERPATH}/post-finales`} onClick={handleClose}>
+              Eliminatorias
             </Link>
             <NavDropdown.Divider />
             <Link className="dropdown-item" to={`${SERVERPATH}/matches`} onClick={handleClose}>

@@ -3,10 +3,22 @@ import Moment from "react-moment";
 
 const logoImage = require.context("../../Banderas", true);
 
+const getImg = (nombre) => {
+  if (!nombre) return null;
+  try { return logoImage(`./${nombre}`); }
+  catch { return null; }
+};
+
 export const CardInput = ({ data, id, form, handleChange }) => {
-  const now = new Date();
-  const match = new Date(data.fechaPartido);
+  const now      = new Date();
+  const match    = new Date(data.fechaPartido);
   const disabled = now > match;
+
+  // /Todos devuelve idPartido; /Partidos devuelve id
+  const partidoId = data.idPartido ?? data.id;
+
+  const img1 = getImg(data.imagenEquipo1);
+  const img2 = getImg(data.imagenEquipo2);
 
   return (
     <div className="bg-card card-animate p-3">
@@ -21,13 +33,13 @@ export const CardInput = ({ data, id, form, handleChange }) => {
 
       <input
         name={`IdPartido${id}`}
-        value={(form[`IdPartido${id}`] = data.id)}
+        value={(form[`IdPartido${id}`] = partidoId)}
         type="hidden"
         required
       />
 
       <div className="team-row">
-        <img src={logoImage(`./${data.imagenEquipo1}`)} alt={data.nombreEquipo1} />
+        {img1 && <img src={img1} alt={data.nombreEquipo1} />}
         <span className="team-name">{data.nombreEquipo1}</span>
         <div className="d-flex flex-column align-items-center">
           <span className="score-label">Goles</span>
@@ -46,7 +58,7 @@ export const CardInput = ({ data, id, form, handleChange }) => {
       <div className="vs-divider">vs</div>
 
       <div className="team-row">
-        <img src={logoImage(`./${data.imagenEquipo2}`)} alt={data.nombreEquipo2} />
+        {img2 && <img src={img2} alt={data.nombreEquipo2} />}
         <span className="team-name">{data.nombreEquipo2}</span>
         <div className="d-flex flex-column align-items-center">
           <span className="score-label">Goles</span>

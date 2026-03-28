@@ -7,6 +7,12 @@ import { apiPutPartidos } from "../../api/apiPartidos";
 
 const logoImage = require.context("../../Banderas", true);
 
+const getImg = (nombre) => {
+  if (!nombre) return null;
+  try { return logoImage(`./${nombre}`); }
+  catch { return null; }
+};
+
 const initialForm = {
   idPartido: "",
   golesEquipo1: "",
@@ -18,22 +24,25 @@ export const CardResult = ({ data, func, isAdmin }) => {
     const response = await apiPutPartidos(form);
     if (response.mensaje) {
       Toast.fire({ icon: "success", title: `${response.mensaje}` });
-      func(prev => !prev);
+      func((prev) => !prev);
     }
   };
 
   const { form, handleChange, handleSubmit } = useForm(initialForm, null, enviarDatos);
 
-  const now = new Date();
-  const match = new Date(data.fechaPartido);
+  const now      = new Date();
+  const match    = new Date(data.fechaPartido);
   const disabled = now > match;
+
+  const img1 = getImg(data.imagenEquipo1);
+  const img2 = getImg(data.imagenEquipo2);
 
   return (
     <Form onSubmit={handleSubmit}>
       <div className="bg-card card-animate p-3">
         <div className="d-flex align-items-center justify-content-between mb-3">
           <span className="match-date-badge">⚽ Grupo {data.grupoEquipo1}</span>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
             <Moment date={new Date(data.fechaPartido)} format="DD/MM/YYYY" />
           </span>
         </div>
@@ -46,7 +55,7 @@ export const CardResult = ({ data, func, isAdmin }) => {
         />
 
         <div className="team-row">
-          <img src={logoImage(`./${data.imagenEquipo1}`)} alt={data.nombreEquipo1} />
+          {img1 && <img src={img1} alt={data.nombreEquipo1} />}
           <span className="team-name">{data.nombreEquipo1}</span>
           <div className="d-flex flex-column align-items-center">
             <span className="score-label">Goles</span>
@@ -65,7 +74,7 @@ export const CardResult = ({ data, func, isAdmin }) => {
         <div className="vs-divider">vs</div>
 
         <div className="team-row">
-          <img src={logoImage(`./${data.imagenEquipo2}`)} alt={data.nombreEquipo2} />
+          {img2 && <img src={img2} alt={data.nombreEquipo2} />}
           <span className="team-name">{data.nombreEquipo2}</span>
           <div className="d-flex flex-column align-items-center">
             <span className="score-label">Goles</span>

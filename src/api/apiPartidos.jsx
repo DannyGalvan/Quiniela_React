@@ -1,250 +1,104 @@
-import { API } from "../config/configuracion";
+import { API, SERVERPATH } from "../config/configuracion";
 import { getCookie } from "./localStorage";
 
-export const apiPartidos = async () => {
+// ── Helper compartido ────────────────────────────────────────────────────────
+const handleStatus = (status) => {
+  if (status === 403) location.href = `${SERVERPATH}/unauthorized`;
+  if (status === 401) { localStorage.clear(); location.href = `${SERVERPATH}/expired`; }
+};
+
+const apiFetch = async (url, options = {}) => {
   const token = await getCookie("sesion");
   try {
-    const response = await fetch(`${API}/Partidos`, {
-      method: "GET",
+    const response = await fetch(url, {
+      ...options,
       headers: {
-        "content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        ...options.headers,
       },
     });
-
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
+    if (response.status === 200 || response.status === 400) return response.json();
+    handleStatus(response.status);
   } catch (error) {
     console.log(error);
   }
 };
 
-export const apiPartidosUser = async (idUser) => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos/${idUser}`, {
-      method: "GET",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+// ── Partidos de grupos ───────────────────────────────────────────────────────
 
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** GET /api/Partidos — todos los partidos de grupos (resultado oficial) */
+export const apiPartidos = () =>
+  apiFetch(`${API}/Partidos`);
 
-export const apiPostPartidos = async (data) => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos`, {
-      method: "POST",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+/** GET /api/Partidos/{id} — predicciones del usuario */
+export const apiPartidosUser = (idUser) =>
+  apiFetch(`${API}/Partidos/${idUser}`);
 
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** GET /api/Partidos/Todos — todos los partidos + predicción del usuario autenticado */
+export const apiTodosUser = () =>
+  apiFetch(`${API}/Partidos/Todos`);
 
-export const apiPutPartidos = async (data) => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos`, {
-      method: "PUT",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+/** GET /api/Partidos/Comparacion/{id} — comparación predicciones vs resultado oficial */
+export const apiComparationsUser = (idUser) =>
+  apiFetch(`${API}/Partidos/Comparacion/${idUser}`);
 
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** POST /api/Partidos — guardar/actualizar predicción de usuario */
+export const apiPostPartidos = (data) =>
+  apiFetch(`${API}/Partidos`, { method: "POST", body: JSON.stringify(data) });
 
-export const apiComparationsUser = async (idUser) => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos/Comparacion/${idUser}`, {
-      method: "GET",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+/** PUT /api/Partidos — ingresar resultado oficial (admin) */
+export const apiPutPartidos = (data) =>
+  apiFetch(`${API}/Partidos`, { method: "PUT", body: JSON.stringify(data) });
 
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** POST /api/Partidos/Calculo — calcular puntajes de un partido */
+export const apiPostCalculo = (id) =>
+  apiFetch(`${API}/Partidos/Calculo`, {
+    method: "POST",
+    body: JSON.stringify({ idPartido: id }),
+  });
 
-export const apiTodosUser = async () => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos/Todos`, {
-      method: "GET",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+/** GET /api/Partidos/Equipos — catálogo de equipos */
+export const apiEquipos = () =>
+  apiFetch(`${API}/Partidos/Equipos`);
 
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** POST /api/Partidos/Nuevo — crear partido de grupos (admin) */
+export const apiNuevoPartido = (data) =>
+  apiFetch(`${API}/Partidos/Nuevo`, { method: "POST", body: JSON.stringify(data) });
 
+// ── Finales / fases eliminatorias ────────────────────────────────────────────
 
-export const apiPostCalculo = async (id) => {
-  const token = await getCookie("sesion");
-  const data = {
-    idPartido: id,
-  };
-  try {
-    const response = await fetch(`${API}/Partidos/Calculo`, {
-      method: "POST",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+/** GET /api/Finales — todos los partidos eliminatorios */
+export const apiFinales = () =>
+  apiFetch(`${API}/Finales`);
 
-    if (response.status == 200 || response.status == 400) {
-      const data = await response.json();
-      return data;
-    } else if (response.status == 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status == 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    } else {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** GET /api/Finales/{id} — predicciones del usuario para finales */
+export const apiFinalesUser = (idUser) =>
+  apiFetch(`${API}/Finales/${idUser}`);
 
-export const apiEquipos = async () => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos/Equipos`, {
-      method: "GET",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.status === 200 || response.status === 400) {
-      return await response.json();
-    } else if (response.status === 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** GET /api/Finales/Todos — todos los finales + predicción del usuario autenticado */
+export const apiTodosFinalesUser = () =>
+  apiFetch(`${API}/Finales/Todos`);
 
-export const apiNuevoPartido = async (data) => {
-  const token = await getCookie("sesion");
-  try {
-    const response = await fetch(`${API}/Partidos/Nuevo`, {
-      method: "POST",
-      headers: {
-        "content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    if (response.status === 200 || response.status === 400) {
-      return await response.json();
-    } else if (response.status === 403) {
-      location.href = "#/unauthorized";
-    } else if (response.status === 401) {
-      localStorage.clear();
-      location.href = "#/expired";
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+/** GET /api/Finales/Comparacion/{id} — comparación finales */
+export const apiComparationsFinalesUser = (idUser) =>
+  apiFetch(`${API}/Finales/Comparacion/${idUser}`);
+
+/** POST /api/Finales — guardar/actualizar predicción de final */
+export const apiPostFinales = (data) =>
+  apiFetch(`${API}/Finales`, { method: "POST", body: JSON.stringify(data) });
+
+/** PUT /api/Finales — ingresar resultado oficial de final (admin) */
+export const apiPutFinales = (data) =>
+  apiFetch(`${API}/Finales`, { method: "PUT", body: JSON.stringify(data) });
+
+/** POST /api/Finales/Calculo — calcular puntajes de un final */
+export const apiPostCalculoFinal = (id) =>
+  apiFetch(`${API}/Finales/Calculo`, {
+    method: "POST",
+    body: JSON.stringify({ idPartido: id }),
+  });
+
+/** POST /api/Finales/Nuevo — crear partido final (admin) */
+export const apiNuevoFinal = (data) =>
+  apiFetch(`${API}/Finales/Nuevo`, { method: "POST", body: JSON.stringify(data) });

@@ -24,8 +24,11 @@ const CompareGroup = lazy(()=>import('../pages/CompareGroup'));
 const TableResults = lazy(()=>import('../pages/TableResults'));
 const TableResultsCountry = lazy(()=>import('../pages/TableResultsCountry'));
 const Results = lazy(()=>import('../pages/Results'));
+const ResultsFinales = lazy(()=>import('../pages/ResultsFinales'));
 const Instructions = lazy(()=>import('../pages/Instructions'));
 const MantenimientoPartidos = lazy(()=>import('../pages/MantenimientoPartidos'));
+const MantenimientoFinales = lazy(()=>import('../pages/MantenimientoFinales'));
+const PostFinales = lazy(()=>import('../pages/PostFinales'));
 
 const App = () => {
   return (
@@ -39,6 +42,7 @@ const App = () => {
                   <Route path={`${SERVERPATH}`} element={<ProtectedRoute><Home /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/post-group`} element={<ProtectedRoute><PostGroup /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/matches`} element={<ProtectedRoute><Matches /></ProtectedRoute>} />
+                  <Route path={`${SERVERPATH}/post-finales`} element={<ProtectedRoute><PostFinales /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/my-info`} element={<ProtectedRoute><MyInfo /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/my-result`} element={<ProtectedRoute><MyResult /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/comparation`} element={<ProtectedRoute><CompareResult /></ProtectedRoute>} />
@@ -46,7 +50,9 @@ const App = () => {
                   <Route path={`${SERVERPATH}/table-result`} element={<ProtectedRoute><TableResults /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/table-result-country`} element={<ProtectedUnautorized><TableResultsCountry /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/results`} element={<ProtectedUnautorized><Results /></ProtectedUnautorized>} />
+                  <Route path={`${SERVERPATH}/results-finales`} element={<ProtectedUnautorized><ResultsFinales /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/mantenimiento-partidos`} element={<ProtectedUnautorized><MantenimientoPartidos /></ProtectedUnautorized>} />
+                  <Route path={`${SERVERPATH}/mantenimiento-finales`} element={<ProtectedUnautorized><MantenimientoFinales /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/instructions`} element={<ProtectedRoute><Instructions /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/login`} element={<ProtectedLogin><Login /></ProtectedLogin>} />
                   <Route path={`${SERVERPATH}/new_user`} element={<ProtectedLogin><NewUser /></ProtectedLogin>} />

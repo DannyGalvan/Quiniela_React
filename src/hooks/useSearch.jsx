@@ -36,48 +36,17 @@ export const useSearch = (compareList) => {
   const dataFiltered = useMemo(
     () =>
       compareList.filter((matche) => {
-        if (inicio && fin) {
-          return (
-            (matche.nombreEquipo1
-              .toLowerCase()
-              .includes(search.toLowerCase().trim()) ||
-              matche.nombreEquipo2
-                .toLowerCase()
-                .includes(search.toLowerCase().trim())) &&
-            moment(new Date(matche.fechaPartido)).format("YYYY-MM-DD") >=
-              inicio &&
-            moment(new Date(matche.fechaPartido)).format("YYYY-MM-DD") <= fin
-          );
-        } else if (inicio) {
-          return (
-            (matche.nombreEquipo1
-              .toLowerCase()
-              .includes(search.toLowerCase().trim()) ||
-              matche.nombreEquipo2
-                .toLowerCase()
-                .includes(search.toLowerCase().trim())) &&
-            moment(new Date(matche.fechaPartido)).format("YYYY-MM-DD") >= inicio
-          );
-        } else if (fin) {
-          return (
-            (matche.nombreEquipo1
-              .toLowerCase()
-              .includes(search.toLowerCase().trim()) ||
-              matche.nombreEquipo2
-                .toLowerCase()
-                .includes(search.toLowerCase().trim())) &&
-            moment(new Date(matche.fechaPartido)).format("YYYY-MM-DD") <= fin
-          );
-        } else {
-          return (
-            matche.nombreEquipo1
-              .toLowerCase()
-              .includes(search.toLowerCase().trim()) ||
-            matche.nombreEquipo2
-              .toLowerCase()
-              .includes(search.toLowerCase().trim())
-          );
-        }
+        const nombre1 = (matche.nombreEquipo1 ?? "").toLowerCase();
+        const nombre2 = (matche.nombreEquipo2 ?? "").toLowerCase();
+        const term    = search.toLowerCase().trim();
+        const fecha   = moment(new Date(matche.fechaPartido)).format("YYYY-MM-DD");
+
+        const matchesText = nombre1.includes(term) || nombre2.includes(term);
+
+        if (inicio && fin)   return matchesText && fecha >= inicio && fecha <= fin;
+        if (inicio)          return matchesText && fecha >= inicio;
+        if (fin)             return matchesText && fecha <= fin;
+        return matchesText;
       }),
     [compareList, search, inicio, fin]
   );

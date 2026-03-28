@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { TableCountry } from "../components/Tables/TableCountry";
-
-const countries = [
-  { id: 1, title: "Guatemala" },
-  { id: 2, title: "El Salvador" },
-  { id: 3, title: "Honduras" },
-  { id: 4, title: "Nicaragua" },
-  { id: 5, title: "Costa Rica" },
-  { id: 6, title: "Panamá" },
-];
+import { apiPaises } from "../api/apiPaises";
+import Loading from "./Loading/Loading";
 
 const TableResultsCountry = () => {
-  const [width, setWidth] = useState(false);
+  const [paises, setPaises]   = useState([]);
+  const [width, setWidth]     = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const resScreenResize = () => {
@@ -23,6 +18,16 @@ const TableResultsCountry = () => {
     return () => window.removeEventListener("resize", resScreenResize);
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const res = await apiPaises();
+      if (res?.data) setPaises(res.data);
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <Loading />;
+
   return (
     <div className="page-wrap bg-container">
       <div className="page-hero">
@@ -32,13 +37,13 @@ const TableResultsCountry = () => {
 
       <Container fluid className="px-4 pb-5">
         <Row className="g-4">
-          {countries.map(({ id, title }) => (
-            <Col key={id} xs={12} lg={6}>
+          {paises.map((pais) => (
+            <Col key={pais.id} xs={12} lg={6}>
               <div className="bg-card p-3">
                 <TableCountry
-                  idCountry={id}
+                  idCountry={pais.id}
                   width={width}
-                  title={`🏅 Posiciones ${title}`}
+                  title={`🏅 Posiciones ${pais.nombre}`}
                 />
               </div>
             </Col>
