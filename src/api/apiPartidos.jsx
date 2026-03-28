@@ -203,3 +203,48 @@ export const apiPostCalculo = async (id) => {
     console.log(error);
   }
 };
+
+export const apiEquipos = async () => {
+  const token = await getCookie("sesion");
+  try {
+    const response = await fetch(`${API}/Partidos/Equipos`, {
+      method: "GET",
+      headers: {
+        "content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 200 || response.status === 400) {
+      return await response.json();
+    } else if (response.status === 401) {
+      localStorage.clear();
+      location.href = "#/expired";
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const apiNuevoPartido = async (data) => {
+  const token = await getCookie("sesion");
+  try {
+    const response = await fetch(`${API}/Partidos/Nuevo`, {
+      method: "POST",
+      headers: {
+        "content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 200 || response.status === 400) {
+      return await response.json();
+    } else if (response.status === 403) {
+      location.href = "#/unauthorized";
+    } else if (response.status === 401) {
+      localStorage.clear();
+      location.href = "#/expired";
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

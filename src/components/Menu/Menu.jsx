@@ -91,6 +91,15 @@ export const Menu = ({ cerrarSesion, isAdmin, show, handleClose, theme, toggleTh
                 Ingresar Resultado
               </Link>
             )}
+            {isAdmin && (
+              <Link
+                className="dropdown-item"
+                to={`${SERVERPATH}/mantenimiento-partidos`}
+                onClick={handleClose}
+              >
+                Mantenimiento Partidos
+              </Link>
+            )}
             <Link className="dropdown-item" to={`${SERVERPATH}/instructions`} onClick={handleClose}>
               Instrucciones
             </Link>

@@ -25,6 +25,7 @@ const TableResults = lazy(()=>import('../pages/TableResults'));
 const TableResultsCountry = lazy(()=>import('../pages/TableResultsCountry'));
 const Results = lazy(()=>import('../pages/Results'));
 const Instructions = lazy(()=>import('../pages/Instructions'));
+const MantenimientoPartidos = lazy(()=>import('../pages/MantenimientoPartidos'));
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
                   <Route path={`${SERVERPATH}/table-result`} element={<ProtectedRoute><TableResults /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/table-result-country`} element={<ProtectedUnautorized><TableResultsCountry /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/results`} element={<ProtectedUnautorized><Results /></ProtectedUnautorized>} />
+                  <Route path={`${SERVERPATH}/mantenimiento-partidos`} element={<ProtectedUnautorized><MantenimientoPartidos /></ProtectedUnautorized>} />
                   <Route path={`${SERVERPATH}/instructions`} element={<ProtectedRoute><Instructions /></ProtectedRoute>} />
                   <Route path={`${SERVERPATH}/login`} element={<ProtectedLogin><Login /></ProtectedLogin>} />
                   <Route path={`${SERVERPATH}/new_user`} element={<ProtectedLogin><NewUser /></ProtectedLogin>} />

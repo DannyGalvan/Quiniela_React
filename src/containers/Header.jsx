@@ -95,6 +95,11 @@ const Header = () => {
                     Ingresar Resultado
                   </Link>
                 )}
+                {authState.isAdmin && (
+                  <Link className="dropdown-item" to={`${SERVERPATH}/mantenimiento-partidos`}>
+                    Mantenimiento Partidos
+                  </Link>
+                )}
                 <Link className="dropdown-item" to={`${SERVERPATH}/instructions`}>
                   Instrucciones
                 </Link>
