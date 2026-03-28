@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { InputSelectMatches } from "../components/Inputs/InputSelectMatches";
 import { ListResult } from "../containers/ListResult";
 import { MatchesList } from "../containers/MatchesList";
@@ -34,56 +34,62 @@ const Results = () => {
   }, []);
 
   const matchedFiltered = useMemo(
-    () =>
-      matches.filter((s) => {
-        return s.id == select;
-      }),
+    () => matches.filter((s) => s.id == select),
     [matches, select]
   );
 
   return (
-    <Container fluid className="page-wrap bg-container px-5">
-      <h1 className="fw-bold text-center pt-3">
-        Ingreso y Calculo de Resultados Por Partido
-      </h1>
-      <InputSelectMatches
-        data={matches}
-        size="lg"
-        value={select}
-        error={select}
-        referencia={inputSelect}
-        onChange={onChange}
-      />
-      {matchedFiltered.length > 0 ? (
-        <>
-          <Col className="my-3">
-            <p>Actualizacion de datos</p>
-            <ListResult
-              isAdmin={false}
-              list={matchedFiltered}
-              func={setChange}
-            />
-          </Col>
-          <Col>
-            <p>Datos actuales</p>
-            <MatchesList
-              list={matchedFiltered}
-            />
-          </Col>
-        </>
-      ) : (<MesajeNoData mesaje={"No has Seleccionado ningun encuentro"}/>)}
-      <Row className="mt-3 pb-5">
-        <Col className="d-flex justify-content-center">
-          {matchedFiltered.length != 0 && (
-            <Button 
-            onClick={() => contextActions(select)}
-            style={{ background: "#48823F", borderColor: "white" }}>
-              Calcular Resultados
-            </Button>
-          )}
-        </Col>
-      </Row>
-    </Container>
+    <div className="bg-container page-wrap">
+      <div className="page-hero">
+        <h1>Ingreso de <span className="gradient-text">Resultados</span></h1>
+        <p>Selecciona un partido para actualizar el marcador</p>
+      </div>
+
+      <Container fluid className="px-4 pb-5">
+        <InputSelectMatches
+          data={matches}
+          size="lg"
+          value={select}
+          error={select}
+          referencia={inputSelect}
+          onChange={onChange}
+        />
+
+        {matchedFiltered.length > 0 ? (
+          <>
+            <Row className="g-4 mt-1">
+              <Col xs={12} lg={6}>
+                <p className="compare-label">Actualización de datos</p>
+                <ListResult
+                  isAdmin={false}
+                  list={matchedFiltered}
+                  func={setChange}
+                />
+              </Col>
+              <Col xs={12} lg={6}>
+                <p className="compare-label">Datos actuales</p>
+                <MatchesList list={matchedFiltered} />
+              </Col>
+            </Row>
+
+            <Row className="mt-4">
+              <Col className="d-flex justify-content-center">
+                <button
+                  className="btn-wc-primary"
+                  style={{ maxWidth: 280 }}
+                  onClick={() => contextActions(select)}
+                  type="button"
+                >
+                  ⚡ Calcular Resultados
+                </button>
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <MesajeNoData mesaje="No has seleccionado ningún encuentro" />
+        )}
+      </Container>
+    </div>
   );
 };
 

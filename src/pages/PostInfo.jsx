@@ -27,9 +27,20 @@ const PostInfo = () => {
         <h1>Ingreso por <span className="gradient-text">Grupos</span></h1>
         <p>Mundial 2026 — USA · Canadá · México</p>
       </div>
-      <h3 className="text-center fw-bold pt-3 text-warning">
-        Nota: solo puedes ingresar el Grupo Completo
-      </h3>
+      <div style={{
+        margin: "0 auto 0.5rem",
+        maxWidth: 520,
+        background: "rgba(245, 158, 11, 0.12)",
+        border: "1.5px solid rgba(245, 158, 11, 0.35)",
+        borderRadius: "var(--radius-md)",
+        padding: "0.65rem 1.25rem",
+        textAlign: "center",
+        fontSize: "0.875rem",
+        fontWeight: 600,
+        color: "var(--brand-gold)",
+      }}>
+        ⚠️ Solo puedes ingresar el grupo completo
+      </div>
       <Container className="py-5">
         <Tabs className="mb-3" justify>
         <Tab eventKey="Grupo A" title="Grupo A">

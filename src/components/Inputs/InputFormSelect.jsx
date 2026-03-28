@@ -22,7 +22,7 @@ export const InputFormSelect = ({ data, size, error, value, referencia, name, on
           <option key={d.id} value={d.id}>{d.nombre}</option>
         ))}
       </Form.Select>
-      <Form.Text className="text-danger fw-bold">{error}</Form.Text>
+      {error && <span className="wc-field__error">{error}</span>}
     </div>
   );
 };

@@ -1,24 +1,27 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { CardMatched } from "../components/Cards/CardMatched";
+import { MesajeNoData } from "../components/Mesages/MesajeNoData";
 
-export const ListForms = ({ xs, md, lg, xl, xxl, list, text,actualiza }) => {
+export const ListForms = ({ xs, md, lg, xl, xxl, list, text, actualiza }) => {
   return (
     <Row xs={xs} md={md} lg={lg} xl={xl} xxl={xxl} className="g-4">
-      {list.length != 0 ? (
+      {list.length !== 0 ? (
         list.map((partido) => (
           <Col key={partido.idPartido}>
-            <CardMatched data={partido} actualiza={actualiza}/>
+            <CardMatched data={partido} actualiza={actualiza} />
           </Col>
         ))
       ) : (
-        <div>
-          <p className="text-danger fw-bold text-center">
-            {text
-              ? `no se encontraron resultados con: ${text}`
-              : "Aun no has llenado datos para este apartado"}
-          </p>
-        </div>
+        <Col xs={12}>
+          <MesajeNoData
+            mesaje={
+              text
+                ? `No se encontraron resultados con: "${text}"`
+                : "Aún no hay datos para este apartado"
+            }
+          />
+        </Col>
       )}
     </Row>
   );

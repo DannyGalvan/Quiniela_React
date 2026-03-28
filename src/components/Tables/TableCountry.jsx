@@ -97,7 +97,7 @@ export const TableCountry = ({ idCountry, width, title }) => {
         contextMessage={seleccionMensaje}
         columns={columnas}
         data={dataFiltered}
-        title={`🏆 ${title}`}
+        title={title}
         pagination
         expandableRows={width}
         fixedHeader

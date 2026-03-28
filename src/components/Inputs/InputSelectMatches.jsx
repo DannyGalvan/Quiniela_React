@@ -37,9 +37,9 @@ export const InputSelectMatches = ({
             </option>
           ))}
       </Form.Select>
-      <Form.Text className="text-danger fw-bold">
-        {value == 0 && "Debes de seleccionar un encuentro"}
-      </Form.Text>
+      {value == 0 && (
+        <span className="wc-field__error">Debes seleccionar un encuentro</span>
+      )}
     </Col>
   );
 };

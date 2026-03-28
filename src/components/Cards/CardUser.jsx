@@ -1,41 +1,52 @@
-import React from 'react'
-import { Card, ListGroup } from 'react-bootstrap';
+import React from "react";
 
-export const CardUser = (props) => {
-    const { variant, title, content, style, data } = props;
-    const tamanio = data ? "18rem" : "22rem";
-    return (
-      <Card
-        bg={variant}
-        key={variant}
-        text={!style && (variant === "light" ? "dark" : "white")}
-        style={{ width: tamanio, ...style }}
-        className="mb-2"
-      >
-        <Card.Header>{title ?? "Datos Usuario"}</Card.Header>
-        <Card.Body>
-          <Card.Text className="text-center">{content}</Card.Text>
-          {data &&
-            <ListGroup variant="flush">
-                <ListGroup.Item variant="primary">
-                    Id: {data.id}                 
-                </ListGroup.Item>
-                <ListGroup.Item variant="primary">
-                    Pocición: {data.pocicion}                 
-                </ListGroup.Item>
-                <ListGroup.Item variant="primary">
-                    Nombre: {data.nombre}                 
-                </ListGroup.Item>
-                <ListGroup.Item variant="primary">
-                    DPI: {`${data.dpi.substring(0,5)}...3325120101...`}              
-                </ListGroup.Item>
-                <ListGroup.Item variant="primary">
-                    Punteo: <strong className='fw-bold text-danger'>{data.punteo}</strong>                 
-                </ListGroup.Item>
-            </ListGroup>
-          }
-        </Card.Body>
-      </Card>
-    );
-}
+export const CardUser = ({ data, title, content }) => {
+  const rows = data
+    ? [
+        { label: "Posición", value: data.pocicion },
+        { label: "Nombre",   value: data.nombre },
+        { label: "DPI",      value: `${data.dpi.substring(0, 5)}·····` },
+        { label: "Punteo",   value: data.punteo, highlight: true },
+      ]
+    : [];
 
+  return (
+    <div className="bg-card p-3" style={{ minWidth: "260px", maxWidth: "320px" }}>
+      <div className="match-date-badge mb-2">
+        {title ?? "Datos Usuario"}
+      </div>
+
+      {content && (
+        <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", textAlign: "center" }}>
+          {content}
+        </p>
+      )}
+
+      {rows.length > 0 && (
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {rows.map(({ label, value, highlight }) => (
+            <li
+              key={label}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "8px 4px",
+                borderBottom: "1px solid var(--border-subtle)",
+                fontSize: "0.875rem",
+              }}
+            >
+              <strong style={{ color: "var(--text-muted)", fontWeight: 600 }}>{label}</strong>
+              <strong style={{
+                color: highlight ? "var(--brand-red)" : "var(--text-primary)",
+                fontWeight: highlight ? 800 : 600,
+              }}>
+                {value}
+              </strong>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};

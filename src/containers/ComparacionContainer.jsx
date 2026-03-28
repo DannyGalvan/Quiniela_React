@@ -17,6 +17,7 @@ const ComparacionContainer = ({ data }) => {
     golesEquipo2: data.quinielaE2,
     fechaPartido: data.fechaPartido,
   };
+
   const my = {
     id: data.idPartido,
     idEquipo1: data.idEquipo1,
@@ -31,17 +32,18 @@ const ComparacionContainer = ({ data }) => {
     golesEquipo2: data.golesEquipo2,
     fechaPartido: data.fechaPartido,
   };
+
   return (
-    <Row xs={1} md={2} lg={2} xl={2} xxl={2}>
+    <Row xs={1} md={2} className="g-3 align-items-start">
       <Col>
-        <p className="text-center fw-bold">Resultado Oficial</p>
+        <p className="compare-label">Resultado Oficial</p>
         <CardPartidos data={resultado} />
       </Col>
       <Col>
-        <p className="text-center fw-bold">
-          Resultado Ingresado Obtuviste {" "}
-          <strong className="text-danger fw-bold">{data.punteo}</strong> puntos
-        </p>
+        <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+          <p className="compare-label mb-0">Tu Resultado</p>
+          <span className="points-chip">{data.punteo} pts</span>
+        </div>
         <CardPartidos data={my} />
       </Col>
     </Row>
